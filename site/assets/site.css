@@ -44,6 +44,7 @@ nav a.cta:hover { filter: brightness(1.08); }
   nav { width: 100%; margin: 0 -6px; }
   nav a { padding: 6px 10px; font-size: .9rem; }
 }
+@media (max-width: 34rem) { nav a[href$="/about/"] { display: none; } } /* it is in the footer, and the call to action must fit */
 
 main { flex: 1; width: 100%; padding-top: 28px; padding-bottom: 56px; }
 
