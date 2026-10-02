@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: A problem with the plugin itself
+    url: https://github.com/peppy6582/jellydisc/issues/new/choose
+    about: This repository is the menu catalogue; the plugin has its own issues.

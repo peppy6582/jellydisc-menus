@@ -1,0 +1,61 @@
+name: Submit a menu
+description: Paste a menu and the checks will turn it into a pull request, or tell you what to fix.
+title: "Menu: "
+labels: ["submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for adding a menu. Paste it below and fill in how it should be listed. An automatic check runs on this issue; if it passes, a pull request is opened for review, and if not, you get a comment saying what to fix (edit this issue to run it again).
+
+        The rules are in [CONTRIBUTING](https://github.com/peppy6582/jellydisc-menus/blob/main/CONTRIBUTING.md). To change a menu that is already here, open a pull request instead.
+  - type: textarea
+    id: menu
+    attributes:
+      label: Menu JSON
+      description: The whole `.menu.json` file. It must include `match.providerIds.Tmdb`. Leave out `menuId` for a new one to be made.
+      render: json
+    validations:
+      required: true
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: The film or series name, as it should be shown.
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: One or two sentences, plain text, up to 280 characters.
+    validations:
+      required: true
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: Up to 8, separated by commas. Lower-case letters, digits and hyphens.
+      placeholder: minimal, list, backdrop
+  - type: input
+    id: art
+    attributes:
+      label: Where the art comes from
+      description: Write `none` if the menu refers to no art files. Otherwise say where each file comes from.
+      value: none
+  - type: input
+    id: name
+    attributes:
+      label: Your name
+      description: How you would like to be credited. Leave empty to use your GitHub name.
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmations
+      options:
+        - label: I dedicate this menu to the public domain under CC0 1.0.
+          required: true
+        - label: It contains no studio artwork, music or video, and refers to none by link.
+          required: true
+        - label: I made it, or I have the right to share it, and it isn't an unedited auto-generated draft.
+          required: true

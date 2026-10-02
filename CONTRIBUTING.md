@@ -17,6 +17,8 @@ Menus, fixes and improvements are welcome. A pull request is the only way in for
 
 ## Adding a menu
 
+**Easiest:** use the [Submit a menu form](https://github.com/peppy6582/jellydisc-menus/issues/new?template=submit-menu.yml). Paste the menu and fill in how it is listed; an automatic check runs on the issue and either opens a pull request for you or comments with what to fix (edit the issue to run it again). Only new menus go through the form; to change an existing one, open a pull request. Or do it by hand:
+
 1. Build and check it with the plugin ([Authoring menus](https://github.com/peppy6582/jellydisc/blob/main/docs/AUTHORING.md);
    `python3 tools/menucheck.py my.menu.json` in the plugin repo).
 2. Give it a fresh lower-case `menuId` (any UUID) and file it as

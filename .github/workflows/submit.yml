@@ -1,0 +1,112 @@
+name: Submissions
+
+# Turns a "Submit a menu" issue into a pull request, or tells the submitter what to fix.
+#
+# The issue's text is untrusted. It reaches the checker only as a file and an environment variable, is never part of a
+# shell command or an expression, and the checker only parses it as data. The workflow runs this repository's own code
+# from main, never anything from the issue.
+on:
+  issues:
+    types: [opened, edited, reopened]
+
+concurrency:
+  group: submission-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  submission:
+    if: github.event.issue.pull_request == null && contains(github.event.issue.body, '### Menu JSON')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+      ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+      ISSUE_AUTHOR_ID: ${{ github.event.issue.user.id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Read the pinned plugin commit
+        id: lock
+        run: echo "ref=$(jq -r .ref plugin.lock.json)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: peppy6582/jellydisc
+          ref: ${{ steps.lock.outputs.ref }}
+          path: plugin
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - run: pip install jsonschema
+
+      - name: Check the submission
+        id: check
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          printf '%s' "$ISSUE_BODY" > "$RUNNER_TEMP/body.md"
+          python3 tools/submission.py --body "$RUNNER_TEMP/body.md" --author "$ISSUE_AUTHOR" --issue "$ISSUE_NUMBER" \
+            --plugin plugin --out "$RUNNER_TEMP/result" --github-output "$GITHUB_OUTPUT"
+
+      - name: The plugin's own loader
+        id: loader
+        if: steps.check.outputs.ok == 'true'
+        continue-on-error: true
+        env:
+          MENU_PATH: ${{ steps.check.outputs.menu_path }}
+        run: dotnet run --project plugin/tools/MenuCheck -c Release -- "$MENU_PATH" 2>&1 | tee "$RUNNER_TEMP/loader.txt"
+
+      - name: Reply, and open the pull request if it passed
+        env:
+          CHECK_OK: ${{ steps.check.outputs.ok }}
+          LOADER: ${{ steps.loader.outcome }}
+        run: |
+          out="$RUNNER_TEMP/result"
+          ok="$CHECK_OK"
+          if [ "$ok" = true ] && [ "$LOADER" != success ]; then
+            ok=false
+            {
+              echo "Thanks for the submission. It can't go in yet: the plugin's own loader rejected it, which the other checks didn't catch. Edit the issue and the checks run again."
+              echo
+              echo '```'
+              head -c 3000 "$RUNNER_TEMP/loader.txt" | tr -d '`'
+              echo
+              echo '```'
+            } > "$out/comment.md"
+          fi
+
+          if [ "$ok" = true ]; then
+            branch="submission/$ISSUE_NUMBER"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git switch -C "$branch"
+            git add menus
+            {
+              cat "$out/pr-title.txt"
+              echo
+              echo "Submitted in #$ISSUE_NUMBER"
+              echo
+              echo "Co-authored-by: $ISSUE_AUTHOR <$ISSUE_AUTHOR_ID+$ISSUE_AUTHOR@users.noreply.github.com>"
+            } > "$RUNNER_TEMP/commit.txt"
+            git commit -q -F "$RUNNER_TEMP/commit.txt"
+            git push --force origin "$branch"
+            existing="$(gh pr list --head "$branch" --state open --json number --jq '.[0].number // empty')"
+            if [ -z "$existing" ]; then
+              gh pr create --base main --head "$branch" --title "$(cat "$out/pr-title.txt")" --body-file "$out/pr-body.md"
+            else
+              gh pr edit "$existing" --title "$(cat "$out/pr-title.txt")" --body-file "$out/pr-body.md"
+            fi
+            url="$(gh pr view "$branch" --json url --jq .url)"
+            printf '\nA pull request is open for review: %s\n' "$url" >> "$out/comment.md"
+          fi
+
+          gh issue comment "$ISSUE_NUMBER" --body-file "$out/comment.md" --edit-last --create-if-none

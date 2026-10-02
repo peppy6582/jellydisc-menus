@@ -7,6 +7,13 @@ the film or series it is for. The plugin matches it to the right title in your l
 > **Status: early.** Five demonstration menus so far, and a static website (Eleventy + Pagefind) that GitHub Pages publishes from `main`. Community project; not affiliated
 > with Jellyfin or TMDB.
 
+> **Heads up: this project is vibe coded.** The tools, site and workflows in this repository was written by an AI (Claude, through Claude Code) while
+> [Phillip Berryman](https://github.com/peppy6582) steered. The one human-originated piece is the idea of describing disc menus as a
+> shareable **JSON schema**, which Phillip proposed and which was then built out together. The implementation, the tests, the tooling
+> and the docs are AI-generated, and no human has independently reviewed them or had them security-audited. They work (the automated
+> tests pass and the author runs the plugin on their own server), but expect rough edges and **read the code before you trust it**,
+> especially anything that handles untrusted menu files. Human reviewers and corrections are very welcome.
+
 ## What's here
 
 ```
@@ -36,7 +43,7 @@ be sent anywhere. Within `formatVersion` 1 fields are only ever added, so ignore
 
 ## Add a menu
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md). In short: fork, add the two files, open a pull request; a bot-free check runs the
+Read [CONTRIBUTING.md](CONTRIBUTING.md). The easiest way is the [Submit a menu form](https://github.com/peppy6582/jellydisc-menus/issues/new?template=submit-menu.yml), which checks your menu and opens the pull request for you. By hand: fork, add the two files, open a pull request; a bot-free check runs the
 same rules you can run yourself:
 
 ```bash
