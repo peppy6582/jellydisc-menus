@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "menuId": "0b311cdd-e7c2-4e27-b4bc-fb1e5acebfc8",
+  "revision": 1,
+  "meta": {
+    "author": "peppy6582",
+    "language": "en-US",
+    "notes": "static background. The simplest kind of menu: the title's own Jellyfin backdrop, dimmed, with a plain list of buttons. No layout, no art files. Extras are illustrative, not a real disc listing. Its Scene Selection uses the built-in default screen (no styling menu): a 3x3 grid with six chapters per page. Also: fade transition and built-in click sounds."
+  },
+  "match": { "itemType": "Movie", "providerIds": {"Tmdb": "27205", "Imdb": "tt1375666"}, "release": {"edition": "Example", "format": "BluRay", "region": "A", "year": 2010} },
+  "background": { "source": "jellyfin", "imageType": "Backdrop", "index": 0, "dim": 0.55 },
+  "theme": { "id": "list-dark", "accent": "#4cc9f0", "align": "left" },
+  "extras": {
+    "making-of": { "type": "BehindTheScenes", "durationSec": 1500 },
+    "featurette": { "type": "Featurette", "durationSec": 840 },
+    "trailer": { "type": "Trailer", "durationSec": 150, "optional": true }
+  },
+  "root": "main",
+  "menus": {
+    "main": {
+      "title": "Main Menu",
+      "entries": [
+        { "action": "playFeature", "label": "Play Movie" },
+        { "action": "chapters", "label": "Scene Selection", "perPage": 6 },
+        { "action": "submenu", "label": "Special Features", "menu": "features" }
+      ]
+    },
+    "features": {
+      "title": "Special Features",
+      "entries": [
+        { "action": "playExtra", "label": "Making Of", "extra": "making-of" },
+        { "action": "playExtra", "label": "Featurette", "extra": "featurette" },
+        { "action": "playExtra", "label": "Theatrical Trailer", "extra": "trailer" },
+        { "action": "back", "label": "Back" }
+      ]
+    }
+  },
+  "layout": { "transition": {"style": "fade", "durationMs": 250} },
+  "audio": { "sounds": {"preset": "click", "volume": 0.4} }
+}

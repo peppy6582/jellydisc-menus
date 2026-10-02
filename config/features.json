@@ -1,0 +1,15 @@
+{
+  "_about": "Which plugin version first supported each optional feature a menu can use. Every feature below shipped in the first release, so all are 0.1.0; when a later plugin adds a feature, add it here with its version and the catalogue computes each menu's minPluginVersion automatically.",
+  "features": {
+    "layout": "0.1.0",
+    "flow": "0.1.0",
+    "layers": "0.1.0",
+    "transitions": "0.1.0",
+    "audio": "0.1.0",
+    "chapters": "0.1.0",
+    "home": "0.1.0",
+    "trailer": "0.1.0",
+    "tmdb-background": "0.1.0",
+    "asset-art": "0.1.0"
+  }
+}

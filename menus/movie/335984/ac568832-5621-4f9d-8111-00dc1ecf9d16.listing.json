@@ -1,0 +1,18 @@
+{
+  "listingVersion": 1,
+  "menuId": "ac568832-5621-4f9d-8111-00dc1ecf9d16",
+  "title": "Blade Runner 2049",
+  "description": "The title's own trailer looping behind a translucent bar, with an automatically paged Special Features grid.",
+  "tags": [
+    "trailer",
+    "paging",
+    "bar"
+  ],
+  "licence": "CC0-1.0",
+  "author": {
+    "name": "peppy6582",
+    "github": "peppy6582"
+  },
+  "artSources": "none",
+  "demo": true
+}

@@ -1,0 +1,78 @@
+name: Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Read-only on purpose: this workflow runs on pull requests from forks, which are untrusted.
+permissions:
+  contents: read
+
+jobs:
+  tools:
+    name: Checker and index builder tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read the pinned plugin commit
+        id: lock
+        run: echo "ref=$(jq -r .ref plugin.lock.json)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: peppy6582/jellydisc
+          ref: ${{ steps.lock.outputs.ref }}
+          path: plugin
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install jsonschema
+      - name: Tests
+        run: python3 -W ignore -m unittest discover -s tools -p "test_*.py"
+        env:
+          PLUGIN_DIR: ${{ github.workspace }}/plugin
+
+  menus:
+    name: Check every menu
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Read the pinned plugin commit
+        id: lock
+        run: echo "ref=$(jq -r .ref plugin.lock.json)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: peppy6582/jellydisc
+          ref: ${{ steps.lock.outputs.ref }}
+          path: plugin
+      # The previous catalogue, to check that revisions only go up and nothing disappears unannounced.
+      - name: Check out the base branch
+        if: github.event_name == 'pull_request'
+        run: git worktree add ../base "origin/${{ github.base_ref }}"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - run: pip install jsonschema
+      - name: Catalogue rules, JSON Schema and cross-reference checks
+        run: |
+          args=(--plugin plugin)
+          if [ -d ../base ]; then args+=(--base ../base); fi
+          python3 tools/catalogue_check.py "${args[@]}" --json | tee check-result.json
+          python3 tools/catalogue_check.py "${args[@]}"
+      - name: The plugin's own loader
+        run: |
+          shopt -s globstar nullglob
+          dotnet run --project plugin/tools/MenuCheck -c Release -- menus/**/*.menu.json
+      - name: Build the index (and check it)
+        run: python3 tools/build_index.py --plugin plugin --out _site
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: check-result
+          path: check-result.json
+          if-no-files-found: ignore

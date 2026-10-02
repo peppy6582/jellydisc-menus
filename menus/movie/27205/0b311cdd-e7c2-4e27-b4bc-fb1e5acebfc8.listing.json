@@ -1,0 +1,18 @@
+{
+  "listingVersion": 1,
+  "menuId": "0b311cdd-e7c2-4e27-b4bc-fb1e5acebfc8",
+  "title": "Inception",
+  "description": "The simplest kind of menu: a plain list of buttons over the title's own backdrop, with fade transitions and click sounds.",
+  "tags": [
+    "minimal",
+    "list",
+    "backdrop"
+  ],
+  "licence": "CC0-1.0",
+  "author": {
+    "name": "peppy6582",
+    "github": "peppy6582"
+  },
+  "artSources": "none",
+  "demo": true
+}

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://peppy6582.github.io/jellydisc-menus/schema/v1/index.schema.json",
+  "title": "Disc Menus catalogue index",
+  "description": "The one public file clients download to browse the catalogue. Matching to a library is done by the client, locally, on providerIds. Within formatVersion 1 fields are only ever added: clients must ignore fields they don't know. A breaking change would publish a new /v2/ path and leave /v1/ in place.",
+  "type": "object",
+  "required": ["format", "formatVersion", "generated", "menuSchemaVersions", "baseUrl", "licence", "attribution", "entries", "withdrawn"],
+  "properties": {
+    "format": { "const": "jellydisc-catalogue" },
+    "formatVersion": { "const": 1 },
+    "generated": { "type": "string", "format": "date-time" },
+    "menuSchemaVersions": { "type": "array", "items": { "type": "integer" }, "minItems": 1 },
+    "baseUrl": { "description": "Every url in the index is relative to this.", "type": "string", "pattern": "^https://.+/$" },
+    "licence": { "const": "CC0-1.0" },
+    "attribution": { "type": "string" },
+    "entries": { "type": "array", "items": { "$ref": "#/$defs/entry" } },
+    "withdrawn": {
+      "description": "Menus removed from the catalogue; a client that installed one may want to tell its user.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["menuId", "date", "reason"],
+        "properties": { "menuId": { "type": "string" }, "date": { "type": "string" }, "reason": { "type": "string" } }
+      }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": ["menuId", "revision", "menuSchemaVersion", "minPluginVersion", "title", "match", "author", "licence", "description", "url", "sha256", "size", "features", "needsLocalArt", "demo", "page"],
+      "properties": {
+        "menuId": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$" },
+        "revision": { "type": "integer", "minimum": 1 },
+        "menuSchemaVersion": { "type": "integer" },
+        "minPluginVersion": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+        "title": { "type": "string" },
+        "originalTitle": { "type": "string" },
+        "year": { "type": "integer" },
+        "match": {
+          "description": "Exactly the menu's own match block: what a client matches against its library.",
+          "type": "object",
+          "required": ["itemType", "providerIds"],
+          "properties": {
+            "itemType": { "enum": ["Movie", "Series", "Season"] },
+            "providerIds": { "type": "object", "minProperties": 1 },
+            "seasonNumber": { "type": "integer" },
+            "release": { "type": "object" }
+          }
+        },
+        "author": { "type": "object", "required": ["name"] },
+        "licence": { "const": "CC0-1.0" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "language": { "type": "string" },
+        "description": { "type": "string" },
+        "url": { "description": "The menu file, relative to baseUrl. A revision's url never changes and never disappears.", "type": "string" },
+        "sha256": { "description": "Of the file at url. Clients must check it before installing.", "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "size": { "type": "integer", "minimum": 1 },
+        "features": { "description": "Which optional features the menu uses (for filtering and badges).", "type": "array", "items": { "type": "string" } },
+        "backgrounds": { "type": "array", "items": { "type": "string" } },
+        "needsLocalArt": { "description": "asset: files the menu refers to. The catalogue hosts none: the user must supply art with these names.", "type": "array", "items": { "type": "string" } },
+        "demo": { "type": "boolean" },
+        "page": { "description": "The menu's page on the site, relative to baseUrl.", "type": "string" },
+        "updated": { "type": "string" }
+      }
+    }
+  }
+}

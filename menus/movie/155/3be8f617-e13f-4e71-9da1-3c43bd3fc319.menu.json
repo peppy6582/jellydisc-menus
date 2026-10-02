@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "menuId": "3be8f617-e13f-4e71-9da1-3c43bd3fc319",
+  "revision": 1,
+  "meta": {
+    "author": "peppy6582",
+    "language": "en-US",
+    "notes": "Expects background.webp, banner.webp and ambient.wav under assets/3be8f617-e13f-4e71-9da1-3c43bd3fc319/ on the server; none are hosted here. Scene Selection has its own styled screen."
+  },
+  "match": { "itemType": "Movie", "providerIds": {"Tmdb": "155", "Imdb": "tt0468569"}, "release": {"edition": "Example", "format": "BluRay", "region": "A", "year": 2008} },
+  "background": { "source": "image", "image": "asset:3be8f617-e13f-4e71-9da1-3c43bd3fc319/background.webp", "dim": 0 },
+  "theme": {
+    "id": "local-art",
+    "accent": "#c77dff",
+    "align": "center",
+    "textColor": "#dfe9f5",
+    "font": "sans",
+    "fontSize": 2.4,
+    "uppercase": true,
+    "bold": true,
+    "letterSpacing": 0.05
+  },
+  "layout": {
+    "hideTitle": true,
+    "buttonStyle": "text",
+    "layers": [
+      {
+        "type": "image",
+        "image": "asset:3be8f617-e13f-4e71-9da1-3c43bd3fc319/banner.webp",
+        "position": { "x": 50, "y": 95, "w": 86, "h": 20, "anchor": "bottom" },
+        "fit": "contain"
+      }
+    ],
+    "transition": { "style": "zoom", "durationMs": 350 }
+  },
+  "extras": {
+    "making-of": { "type": "BehindTheScenes", "durationSec": 1320 },
+    "gotham-tour": { "type": "Featurette", "durationSec": 600 },
+    "trailer": { "type": "Trailer", "durationSec": 140, "optional": true },
+    "short": { "type": "Short", "durationSec": 410 }
+  },
+  "root": "main",
+  "menus": {
+    "main": {
+      "title": "Main Menu",
+      "entries": [
+        { "action": "playFeature", "label": "Play Movie", "position": {"x": 24, "y": 85, "w": 22, "anchor": "center"} },
+        { "action": "chapters", "label": "Scene Selection", "perPage": 6, "position": {"x": 50, "y": 85, "w": 22, "anchor": "center"}, "menu": "scenes" },
+        { "action": "submenu", "label": "Special Features", "menu": "features", "position": {"x": 76, "y": 85, "w": 22, "anchor": "center"} }
+      ]
+    },
+    "features": {
+      "title": "Special Features",
+      "layout": {
+        "flow": { "region": {"x": 50, "y": 85, "w": 76, "h": 12, "anchor": "center"}, "columns": 5, "rows": 1 }
+      },
+      "entries": [
+        { "action": "playExtra", "label": "Making Of", "extra": "making-of" },
+        { "action": "playExtra", "label": "Tour", "extra": "gotham-tour" },
+        { "action": "playExtra", "label": "Trailer", "extra": "trailer" },
+        { "action": "playExtra", "label": "Short Film", "extra": "short" },
+        { "action": "home", "label": "Home" }
+      ]
+    },
+    "scenes": {
+      "title": "Scene Selection",
+      "layout": {
+        "hideTitle": false,
+        "titlePosition": { "x": 50, "y": 9, "anchor": "top" },
+        "layers": [],
+        "flow": { "region": {"x": 50, "y": 54, "w": 86, "h": 66, "anchor": "center"}, "columns": 3, "rows": 3, "moreLabel": "More Scenes" }
+      },
+      "entries": [{"action":"home", "label":"Main Menu"}]
+    }
+  },
+  "audio": { "music": {"source": "file", "file": "asset:3be8f617-e13f-4e71-9da1-3c43bd3fc319/ambient.wav", "volume": 0.35}, "sounds": {"preset": "chime", "volume": 0.35} }
+}

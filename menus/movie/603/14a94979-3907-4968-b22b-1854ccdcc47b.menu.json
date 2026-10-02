@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "menuId": "14a94979-3907-4968-b22b-1854ccdcc47b",
+  "revision": 1,
+  "meta": { "author": "peppy6582", "language": "en-US", "notes": "Durations measured from a MakeMKV rip; tolerance 3s." },
+  "match": { "itemType": "Movie", "providerIds": {"Tmdb": "603", "Imdb": "tt0133093"}, "release": {"edition": "10th Anniversary", "format": "BluRay", "region": "A", "year": 2008} },
+  "background": { "source": "jellyfin", "imageType": "Backdrop", "index": 0, "dim": 0.45 },
+  "theme": { "id": "grid-dark", "accent": "#3ddc84", "align": "left" },
+  "extras": {
+    "making-of": { "type": "BehindTheScenes", "durationSec": 1843, "toleranceSec": 3 },
+    "del-rooftop": { "type": "DeletedScene", "durationSec": 142, "ordinal": 1 },
+    "del-lobby": { "type": "DeletedScene", "durationSec": 211, "ordinal": 2 },
+    "trailer": { "type": "Trailer", "durationSec": 148, "optional": true }
+  },
+  "root": "main",
+  "menus": {
+    "main": {
+      "title": "Main Menu",
+      "layout": { "titlePosition": {"x": 50, "y": 12, "anchor": "top"}, "buttonStyle": "arrow" },
+      "entries": [
+        { "action": "playFeature", "label": "Play Movie", "position": {"x": 20, "y": 88, "anchor": "bottom"} },
+        { "action": "chapters", "label": "Scene Selection", "perPage": 6, "position": {"x": 50, "y": 88, "anchor": "bottom"} },
+        { "action": "submenu", "label": "Special Features", "menu": "features", "position": {"x": 80, "y": 88, "anchor": "bottom"} }
+      ]
+    },
+    "features": {
+      "title": "Special Features",
+      "layout": {
+        "flow": { "region": {"x": 50, "y": 60, "w": 60, "h": 30, "anchor": "center"}, "columns": 2, "rows": 3 }
+      },
+      "entries": [
+        { "action": "playExtra", "label": "Making Of", "extra": "making-of" },
+        { "action": "submenu", "label": "Deleted Scenes", "menu": "deleted" },
+        { "action": "playExtra", "label": "Theatrical Trailer", "extra": "trailer" },
+        { "action": "back", "label": "Back" }
+      ]
+    },
+    "deleted": {
+      "title": "Deleted Scenes",
+      "entries": [
+        { "action": "playSequence", "label": "Play All", "extras": ["del-rooftop", "del-lobby"] },
+        { "action": "playExtra", "label": "Rooftop", "extra": "del-rooftop" },
+        { "action": "playExtra", "label": "Lobby", "extra": "del-lobby" },
+        { "action": "back", "label": "Back" }
+      ]
+    }
+  }
+}

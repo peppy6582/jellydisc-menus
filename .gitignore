@@ -1,0 +1,4 @@
+_site/
+check-result.json
+__pycache__/
+node_modules/

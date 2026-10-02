@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "menuId": "ac568832-5621-4f9d-8111-00dc1ecf9d16",
+  "revision": 1,
+  "meta": {
+    "author": "peppy6582",
+    "language": "en-US",
+    "notes": "trailer video background. The title's own trailer (local file first, then YouTube trailers stored in Jellyfin) loops muted behind a translucent bar holding the buttons. Special Features is an automatic grid that pages with More/Previous, Home pinned. Also: wipe transitions, beep sounds, and the item's Jellyfin theme song as music (silent if it has none). Add a 'poster' to background to show a picture until the video starts."
+  },
+  "match": { "itemType": "Movie", "providerIds": {"Tmdb": "335984", "Imdb": "tt1856101"}, "release": {"edition": "Example", "format": "UHD", "region": "A", "year": 2018} },
+  "background": { "source": "trailer", "trailerIndex": 0, "muted": true, "dim": 0.35 },
+  "theme": {
+    "id": "cinema",
+    "accent": "#ff9f1c",
+    "align": "center",
+    "textColor": "#ffffff",
+    "font": "wide",
+    "fontSize": 2.2,
+    "uppercase": true,
+    "bold": true,
+    "letterSpacing": 0.1
+  },
+  "layout": {
+    "hideTitle": true,
+    "buttonStyle": "arrow",
+    "layers": [
+      {
+        "type": "panel",
+        "position": { "x": 50, "y": 96, "w": 90, "h": 16, "anchor": "bottom" },
+        "fill": "#000000",
+        "opacity": 0.55,
+        "borderColor": "#ff9f1c",
+        "borderWidth": 0.2,
+        "radius": 0.8
+      }
+    ],
+    "transition": { "style": "wipe", "durationMs": 400 }
+  },
+  "extras": {
+    "making-of": { "type": "BehindTheScenes", "durationSec": 1620 },
+    "vfx": { "type": "Featurette", "durationSec": 780 },
+    "composer": { "type": "Interview", "durationSec": 540 },
+    "cast": { "type": "Interview", "durationSec": 900 },
+    "deleted-1": { "type": "DeletedScene", "durationSec": 96, "ordinal": 1 },
+    "deleted-2": { "type": "DeletedScene", "durationSec": 133, "ordinal": 2 },
+    "short": { "type": "Short", "durationSec": 360 }
+  },
+  "root": "main",
+  "menus": {
+    "main": {
+      "title": "Main Menu",
+      "entries": [
+        { "action": "playFeature", "label": "Play Movie", "position": {"x": 22, "y": 88, "w": 24, "anchor": "center"} },
+        { "action": "chapters", "label": "Scene Selection", "perPage": 6, "position": {"x": 50, "y": 88, "w": 24, "anchor": "center"} },
+        { "action": "submenu", "label": "Special Features", "menu": "features", "position": {"x": 78, "y": 88, "w": 24, "anchor": "center"} }
+      ]
+    },
+    "features": {
+      "title": "Special Features",
+      "layout": {
+        "flow": { "region": {"x": 50, "y": 88, "w": 86, "h": 9, "anchor": "center"}, "columns": 6, "rows": 1 }
+      },
+      "entries": [
+        { "action": "playExtra", "label": "Making Of", "extra": "making-of" },
+        { "action": "playExtra", "label": "Visual Effects", "extra": "vfx" },
+        { "action": "playExtra", "label": "Composer Interview", "extra": "composer" },
+        { "action": "playExtra", "label": "Cast Interviews", "extra": "cast" },
+        { "action": "playExtra", "label": "Deleted Scene 1", "extra": "deleted-1" },
+        { "action": "playExtra", "label": "Deleted Scene 2", "extra": "deleted-2" },
+        { "action": "playExtra", "label": "Short Film", "extra": "short" },
+        { "action": "home", "label": "Home" }
+      ]
+    }
+  },
+  "audio": { "music": {"source": "themeSong", "volume": 0.4}, "sounds": {"preset": "beep", "volume": 0.4} }
+}

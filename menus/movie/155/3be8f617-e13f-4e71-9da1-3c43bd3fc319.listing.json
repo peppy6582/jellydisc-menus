@@ -1,0 +1,18 @@
+{
+  "listingVersion": 1,
+  "menuId": "3be8f617-e13f-4e71-9da1-3c43bd3fc319",
+  "title": "The Dark Knight",
+  "description": "A menu that expects its own background, banner and music files, which the user supplies. Shows how art is labelled.",
+  "tags": [
+    "banner",
+    "music",
+    "bring-your-own-art"
+  ],
+  "licence": "CC0-1.0",
+  "author": {
+    "name": "peppy6582",
+    "github": "peppy6582"
+  },
+  "artSources": "Not hosted here. Placeholder background.webp, banner.webp and ambient.wav (CC0) are in examples/assets/local-art at github.com/peppy6582/jellydisc; put them in assets/3be8f617-e13f-4e71-9da1-3c43bd3fc319/.",
+  "demo": true
+}

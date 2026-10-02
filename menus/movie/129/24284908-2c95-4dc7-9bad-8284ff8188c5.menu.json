@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "menuId": "24284908-2c95-4dc7-9bad-8284ff8188c5",
+  "revision": 1,
+  "meta": {
+    "author": "peppy6582",
+    "language": "en-US",
+    "notes": "solid colour background, hand-placed centred buttons, serif text with a glow highlight, and three menu levels so you can see both 'back' (up one level) and 'home' (straight to the main menu). No images at all. Extras are illustrative. Also: slide transitions and chime sounds."
+  },
+  "match": { "itemType": "Movie", "providerIds": {"Tmdb": "129", "Imdb": "tt0245429"}, "release": {"edition": "Example", "format": "DVD", "region": "1", "year": 2003} },
+  "background": { "source": "color", "color": "#0b132b" },
+  "theme": {
+    "id": "storybook",
+    "accent": "#ffd166",
+    "align": "center",
+    "textColor": "#f1e9d2",
+    "font": "serif",
+    "fontSize": 3.2,
+    "uppercase": true,
+    "letterSpacing": 0.12
+  },
+  "layout": { "buttonStyle": "glow", "titlePosition": {"x": 50, "y": 14, "anchor": "top"}, "transition": {"style": "slide", "durationMs": 350} },
+  "extras": {
+    "making-of": { "type": "Featurette", "durationSec": 1800 },
+    "director-interview": { "type": "Interview", "durationSec": 720 },
+    "trailer-us": { "type": "Trailer", "durationSec": 120, "optional": true },
+    "trailer-jp": { "type": "Trailer", "durationSec": 95, "optional": true }
+  },
+  "root": "main",
+  "menus": {
+    "main": {
+      "title": "Main Menu",
+      "entries": [
+        { "action": "playFeature", "label": "Play Movie", "position": {"x": 50, "y": 42, "anchor": "center"} },
+        { "action": "chapters", "label": "Scene Selection", "perPage": 6, "position": {"x": 50, "y": 54, "anchor": "center"} },
+        { "action": "submenu", "label": "Special Features", "menu": "features", "position": {"x": 50, "y": 66, "anchor": "center"} }
+      ]
+    },
+    "features": {
+      "title": "Special Features",
+      "entries": [
+        { "action": "playExtra", "label": "Making Of", "extra": "making-of", "position": {"x": 50, "y": 36, "anchor": "center"} },
+        { "action": "playExtra", "label": "Director Interview", "extra": "director-interview", "position": {"x": 50, "y": 48, "anchor": "center"} },
+        { "action": "submenu", "label": "Trailers", "menu": "trailers", "position": {"x": 50, "y": 60, "anchor": "center"} },
+        { "action": "back", "label": "Back", "position": {"x": 50, "y": 76, "anchor": "center"} }
+      ]
+    },
+    "trailers": {
+      "title": "Trailers",
+      "entries": [
+        { "action": "playSequence", "label": "Play All", "extras": ["trailer-us", "trailer-jp"], "position": {"x": 50, "y": 36, "anchor": "center"} },
+        { "action": "playExtra", "label": "US Trailer", "extra": "trailer-us", "position": {"x": 50, "y": 48, "anchor": "center"} },
+        { "action": "playExtra", "label": "Japanese Trailer", "extra": "trailer-jp", "position": {"x": 50, "y": 60, "anchor": "center"} },
+        { "action": "back", "label": "Back", "position": {"x": 35, "y": 78, "anchor": "center"} },
+        { "action": "home", "label": "Main Menu", "position": {"x": 65, "y": 78, "anchor": "center"} }
+      ]
+    }
+  },
+  "audio": { "sounds": {"preset": "chime", "volume": 0.35} }
+}
