@@ -29,6 +29,7 @@ permalink: "menus/{{ e.menuId }}/index.html"
     <div id="preview-stage" class="stage">
       <img class="poster" src="{{ ('/' + e.thumb) | url }}" alt="Preview of the {{ e.title }} menu" width="1280" height="720" data-pagefind-meta="image[src]">
       <iframe id="preview-frame" title="Interactive preview of the menu" tabindex="0"></iframe>
+      {% if "tmdb" in e.backgrounds %}<label class="stage-toggle" title="Loads the image from image.tmdb.org; TMDB can then see your address"><input type="checkbox" id="preview-tmdb"> Show the real TMDB backdrop</label>{% endif %}
     </div>
     <p class="muted small">A <strong>layout preview</strong> with generated placeholder pictures: your server supplies the real backgrounds, and playing is switched off.
     Use the mouse, or <button type="button" id="preview-focus" class="linkish">click here</button> and then the arrow keys, Enter and Escape.</p>
@@ -38,7 +39,7 @@ permalink: "menus/{{ e.menuId }}/index.html"
       {% for s in e.screens %}<button type="button" data-screen="{{ s.key }}">{{ s.title }}</button>{% endfor %}
     </p>
     {% if "tmdb" in e.backgrounds %}
-    <p class="small"><label><input type="checkbox" id="preview-tmdb"> Show the film's real TMDB backdrop. This loads images from image.tmdb.org, which can then see your address.</label></p>
+    <p class="small muted">This menu's background is <strong>the film's own TMDB backdrop</strong>, fetched by the viewer's browser from TMDB (the catalogue hosts no pictures). The preview starts with placeholder art; tick <em>Show the real TMDB backdrop</em> on the preview to load it. That asks image.tmdb.org for the picture, which can then see your address.</p>
     {% endif %}
     <p id="preview-status" class="muted small" aria-live="polite"></p>
   </section>

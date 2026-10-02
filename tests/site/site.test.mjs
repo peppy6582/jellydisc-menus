@@ -37,7 +37,7 @@ function fixture(dir) {
       author: { name: EVIL[2], github: "x\" onmouseover=\"alert(5)" }, licence: "CC0-1.0",
       tags: [EVIL[2], "ok"], description: EVIL[1], url: `v1/menus/${id}/1.menu.json`,
       sha256: crypto.createHash("sha256").update(raw).digest("hex"), size: raw.length,
-      features: [EVIL[0]], needsLocalArt: [EVIL[3]], demo: false, page: `menus/${id}/`,
+      features: [EVIL[0]], backgrounds: ["tmdb"], needsLocalArt: [EVIL[3]], demo: false, page: `menus/${id}/`,
       changelog: [{ revision: 1, date: "2026-10-02", notes: EVIL[0] }],
     }],
   };
@@ -130,7 +130,9 @@ test("a menu page embeds its preview without opening it to anything else", () =>
   assert.match(page, /id="preview-frame"/);
   assert.match(page, /data-menu="v1\/menus\/11111111-2222-4333-8444-555555555555\/1\.menu\.json"/);
   assert.ok(!/<iframe[^>]*\ssrc=/.test(page), "the frame's address is set by script from a validated path");
-  assert.ok(!page.includes("image.tmdb.org"));
+  // the privacy note may name TMDB, but nothing on the page may load from it
+  assert.ok(!/\b(?:src|href|action|data-[a-z-]+)="[^"]*image\.tmdb\.org/.test(page));
+  assert.ok(!/url\([^)]*tmdb/i.test(page));
 });
 
 test("share tags and the icon are present and escape hostile text", () => {
@@ -144,4 +146,11 @@ test("share tags and the icon are present and escape hostile text", () => {
     assert.ok(!/<meta[^>]*content="[^"]*"\s*onerror/i.test(text), name);
     for (const m of text.matchAll(/<img\b[^>]*>/gi)) assert.match(m[0], /\salt="/, `${name}: image without alt text`);
   }
+});
+
+test("a menu with a tmdb background offers the real backdrop on the preview itself, with the privacy note", () => {
+  const page = html["menus/11111111-2222-4333-8444-555555555555/index.html"];
+  assert.match(page, /<div id="preview-stage"[^>]*>[\s\S]*?class="stage-toggle"[\s\S]*?id="preview-tmdb"[\s\S]*?<\/div>/, "the toggle is inside the stage, not below the fold");
+  assert.match(page, /image\.tmdb\.org for the picture, which can then see your address/);
+  assert.equal((page.match(/id="preview-tmdb"/g) || []).length, 1);
 });
