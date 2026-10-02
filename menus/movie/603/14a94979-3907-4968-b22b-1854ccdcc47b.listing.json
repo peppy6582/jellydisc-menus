@@ -2,10 +2,12 @@
   "listingVersion": 1,
   "menuId": "14a94979-3907-4968-b22b-1854ccdcc47b",
   "title": "The Matrix",
-  "description": "The original minimal example: a bottom row of buttons and a lower menu tree, over the title's backdrop.",
+  "description": "A bottom row of buttons and a lower menu tree, with a different TMDB backdrop on each page.",
   "tags": [
     "minimal",
-    "bottom-row"
+    "bottom-row",
+    "tmdb-backdrop",
+    "backdrop-per-page"
   ],
   "licence": "CC0-1.0",
   "author": {
@@ -13,5 +15,12 @@
     "github": "peppy6582"
   },
   "artSources": "none",
-  "demo": true
+  "demo": true,
+  "changelog": [
+    {
+      "revision": 2,
+      "date": "2026-10-02",
+      "notes": "A TMDB backdrop on every page (a different one each) instead of the server's own, to show how per-page backgrounds are written."
+    }
+  ]
 }

@@ -2,11 +2,11 @@
   "listingVersion": 1,
   "menuId": "0b311cdd-e7c2-4e27-b4bc-fb1e5acebfc8",
   "title": "Inception",
-  "description": "The simplest kind of menu: a plain list of buttons over the title's own backdrop, with fade transitions and click sounds.",
+  "description": "The simplest kind of menu: a plain list of buttons over the film's TMDB backdrop, with fade transitions and click sounds.",
   "tags": [
     "minimal",
     "list",
-    "backdrop"
+    "tmdb-backdrop"
   ],
   "licence": "CC0-1.0",
   "author": {
@@ -14,5 +14,12 @@
     "github": "peppy6582"
   },
   "artSources": "none",
-  "demo": true
+  "demo": true,
+  "changelog": [
+    {
+      "revision": 2,
+      "date": "2026-10-02",
+      "notes": "Uses the film's TMDB backdrop instead of the server's own, to show how a tmdb background is written."
+    }
+  ]
 }
