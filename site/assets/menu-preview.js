@@ -43,6 +43,7 @@
     }
 
     frame.addEventListener('load', function () {
+        frame.classList.add('loaded');
         fit();
         muted = true;
         muteBtn.textContent = 'Sound: off';

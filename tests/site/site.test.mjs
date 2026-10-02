@@ -132,3 +132,16 @@ test("a menu page embeds its preview without opening it to anything else", () =>
   assert.ok(!/<iframe[^>]*\ssrc=/.test(page), "the frame's address is set by script from a validated path");
   assert.ok(!page.includes("image.tmdb.org"));
 });
+
+test("share tags and the icon are present and escape hostile text", () => {
+  const page = html["menus/11111111-2222-4333-8444-555555555555/index.html"];
+  assert.match(page, /<link rel="icon" href="\/jellydisc-menus\/assets\/favicon\.svg"/);
+  assert.match(page, /<meta property="og:title" content="&lt;img src=x onerror=alert\(1\)&gt;"/);
+  assert.match(page, /<title>&lt;img src=x onerror=alert\(1\)&gt; · Disc Menus catalogue<\/title>/);   // once, not &amp;lt;
+  assert.ok(!/&amp;(lt|gt|quot|#39);/.test(page), "text is escaped twice somewhere");
+  assert.match(page, /<meta property="og:image" content="https:\/\/[^"]+\/assets\/thumbs\/11111111-2222-4333-8444-555555555555\.jpg"/);
+  for (const [name, text] of Object.entries(html)) {
+    assert.ok(!/<meta[^>]*content="[^"]*"\s*onerror/i.test(text), name);
+    for (const m of text.matchAll(/<img\b[^>]*>/gi)) assert.match(m[0], /\salt="/, `${name}: image without alt text`);
+  }
+});

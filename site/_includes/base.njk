@@ -7,29 +7,41 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; frame-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>{% if title %}{{ title }} · {% endif %}Disc Menus catalogue</title>
-{% if description %}<meta name="description" content="{{ description }}">{% endif %}
+{% set pageDescription = description or site.tagline %}
+<meta name="description" content="{{ pageDescription }}">
+<meta name="theme-color" content="#5b3fd1">
+<link rel="icon" href="{{ '/assets/favicon.svg' | url }}" type="image/svg+xml">
+<meta property="og:site_name" content="{{ site.name }}">
+<meta property="og:title" content="{{ title or site.name }}">
+<meta property="og:description" content="{{ pageDescription }}">
+<meta property="og:type" content="website">
+{% set shareImage = ogImage or (catalogue.entries[0].thumb if catalogue.entries.length else '') %}
+{% if shareImage %}<meta property="og:image" content="{{ site.url }}{{ shareImage }}">
+<meta name="twitter:card" content="summary_large_image">{% endif %}
 <link rel="stylesheet" href="{{ '/assets/site.css' | url }}">
 </head>
 <body data-base="{{ '/' | url }}">
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <div class="wrap bar">
-    <a class="brand" href="{{ '/' | url }}">Disc Menus <span>catalogue</span></a>
+    <a class="brand" href="{{ '/' | url }}"><img src="{{ '/assets/logo.svg' | url }}" alt="" width="30" height="30">Disc Menus <span>catalogue</span></a>
     <nav aria-label="Main">
       <a href="{{ '/menus/' | url }}">Browse</a>
       <a href="{{ '/search/' | url }}">Search</a>
-      <a href="{{ '/submit/' | url }}">Add a menu</a>
       <a href="{{ '/developers/' | url }}">For developers</a>
       <a href="{{ '/about/' | url }}">About</a>
+      <a class="cta" href="{{ '/submit/' | url }}">Add a menu</a>
     </nav>
   </div>
 </header>
 <main id="main" class="wrap">
 {{ content | safe }}
 </main>
-<footer class="wrap foot">
-  <p>Menus are public domain (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>). The catalogue holds no artwork, music or video.
-  A community project, not affiliated with Jellyfin or TMDB. <a href="{{ '/about/' | url }}">About, privacy and takedowns</a>.</p>
+<footer class="foot">
+  <div class="wrap">
+    <p>Menus are public domain (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>). The catalogue holds no artwork, music or video; previews use generated placeholder art.</p>
+    <p>A community project, not affiliated with Jellyfin or TMDB. <a href="{{ '/about/' | url }}">About, privacy and takedowns</a>.</p>
+  </div>
 </footer>
 </body>
 </html>

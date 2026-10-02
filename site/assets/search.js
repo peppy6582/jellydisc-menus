@@ -17,14 +17,36 @@ async function load() {
 function card(data) {
   const li = document.createElement("li");
   li.className = "card";
+  const href = data.url;
+  // a thumbnail only if it is one of this site's own files
+  const image = data.meta && data.meta.image;
+  if (typeof image === "string" && image.startsWith(base + "assets/thumbs/") && !image.includes("..")) {
+    const t = document.createElement("a");
+    t.className = "thumb";
+    t.href = href;
+    t.tabIndex = -1;
+    t.setAttribute("aria-hidden", "true");
+    const img = document.createElement("img");
+    img.src = image;
+    img.alt = "";
+    img.width = 640;
+    img.height = 360;
+    img.loading = "lazy";
+    t.appendChild(img);
+    li.appendChild(t);
+  }
+  const body = document.createElement("div");
+  body.className = "body";
   const h = document.createElement("h3");
   const a = document.createElement("a");
   a.textContent = (data.meta && data.meta.title) || data.url;
-  a.href = data.url;
+  a.href = href;
   h.appendChild(a);
   const p = document.createElement("p");
-  p.textContent = data.raw_content ? data.raw_content.slice(0, 160) : "";
-  li.append(h, p);
+  p.className = "desc";
+  p.textContent = data.raw_content ? data.raw_content.slice(0, 200) : "";
+  body.append(h, p);
+  li.appendChild(body);
   return li;
 }
 

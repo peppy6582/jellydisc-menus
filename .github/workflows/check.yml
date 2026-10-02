@@ -108,3 +108,7 @@ jobs:
         run: npm test
       - name: Build
         run: npm run build
+      - name: Thumbnails (the previews render, and request nothing outside the site)
+        run: |
+          npx playwright install --with-deps chromium
+          node tools/thumbnails.mjs --site _site

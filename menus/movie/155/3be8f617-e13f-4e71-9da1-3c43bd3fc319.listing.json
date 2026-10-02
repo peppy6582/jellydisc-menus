@@ -5,8 +5,7 @@
   "description": "A menu that expects its own background, banner and music files, which the user supplies. Shows how art is labelled.",
   "tags": [
     "banner",
-    "music",
-    "bring-your-own-art"
+    "music"
   ],
   "licence": "CC0-1.0",
   "author": {

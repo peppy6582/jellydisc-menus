@@ -6,6 +6,20 @@ import path from "node:path";
 
 const ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
+const FORMATS = { DVD: "DVD", BluRay: "Blu-ray", UHD: "4K UHD", Digital: "Digital" };
+
+// What a menu uses, in words a visitor understands. Order is the order badges are shown in; "art" is the one that needs attention.
+const FEATURES = [
+  ["asset-art", "Bring your own art", "art"],
+  ["trailer", "Trailer background", "feature"],
+  ["chapters", "Scene selection", "feature"],
+  ["flow", "Paged grid", "feature"],
+  ["audio", "Music and sounds", "feature"],
+  ["transitions", "Transitions", "feature"],
+  ["tmdb-background", "TMDB backdrops", "feature"],
+  ["layers", "Banner and panels", "feature"],
+];
+
 export default function () {
   const dir = path.resolve(process.env.CATALOGUE_DIR || "_catalogue");
   const index = JSON.parse(fs.readFileSync(path.join(dir, "v1", "index.json"), "utf8"));
@@ -30,8 +44,16 @@ export default function () {
       labels: (m.entries || []).map((x) => x.label).filter((x) => typeof x === "string"),
     }));
 
+    const release = e.match.release || {};
+    const badges = FEATURES.filter(([key]) => (e.features || []).includes(key)).map(([, label, kind]) => ({ label, kind }));
+    const format = FORMATS[release.format] || "";
+
     return {
       ...e,
+      thumb: `assets/thumbs/${e.menuId}.jpg`,
+      badges,
+      releaseLine: [release.edition, format, release.region ? "Region " + release.region : ""].filter(Boolean).join(" · "),
+      discLine: [format, release.edition && release.edition !== "Example" ? release.edition : "", release.year || ""].filter(Boolean).join(" · "),
       backgrounds: e.backgrounds || [],
       needsLocalArt: e.needsLocalArt || [],
       features: e.features || [],
@@ -39,7 +61,7 @@ export default function () {
       raw,
       screens,
       ids: Object.entries(e.match.providerIds).map(([name, value]) => ({ name, value })),
-      release: e.match.release || {},
+      release,
       historyUrl: `https://github.com/peppy6582/jellydisc-menus/commits/main/${repoPath}`,
       sourceUrl: `https://github.com/peppy6582/jellydisc-menus/blob/main/${repoPath}`,
       tmdbUrl: tmdb ? `https://www.themoviedb.org/${kind}/${tmdb}` : null,

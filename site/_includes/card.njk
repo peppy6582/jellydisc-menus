@@ -1,10 +1,10 @@
 <li class="card" data-type="{{ e.kind }}" data-tags="{{ e.tags | join(' ') }}" data-features="{{ e.features | join(' ') }}" data-text="{{ e.searchText }}">
-  <h3><a href="{{ ('/' + e.page) | url }}">{{ e.title }}</a>{% if e.year %} <span class="year">{{ e.year }}</span>{% endif %}</h3>
-  <p>{{ e.description }}</p>
-  <p class="meta">
-    <span class="pill">{{ 'Movie' if e.kind == 'movie' else 'Series' }}</span>
-    {% if e.demo %}<span class="pill demo">demonstration</span>{% endif %}
-    {% if e.needsLocalArt.length %}<span class="pill art">bring your own art</span>{% endif %}
-    {% for t in e.tags %}<span class="pill tag">{{ t }}</span>{% endfor %}
-  </p>
+  <a class="thumb" href="{{ ('/' + e.page) | url }}" tabindex="-1" aria-hidden="true"><img src="{{ ('/' + e.thumb) | url }}" alt="" width="640" height="360" loading="lazy" decoding="async"></a>
+  {% if e.demo %}<span class="corner">Demo</span>{% endif %}
+  <div class="body">
+    <h3><a href="{{ ('/' + e.page) | url }}">{{ e.title }}</a></h3>
+    <p class="sub">{{ 'Movie' if e.kind == 'movie' else 'Series' }}{% if e.discLine %} · {{ e.discLine }}{% endif %}</p>
+    <p class="desc">{{ e.description }}</p>
+    {% if e.badges.length %}<p class="chips">{% for b in e.badges %}{% if loop.index <= 3 %}<span class="chip {{ b.kind }}">{{ b.label }}</span>{% endif %}{% endfor %}</p>{% endif %}
+  </div>
 </li>
