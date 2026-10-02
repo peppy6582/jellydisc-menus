@@ -167,6 +167,21 @@ class Catalogue(unittest.TestCase):
         self.edit_menu(lambda d: d.update(unknownProperty=1))
         self.assertFails("unknownProperty")
 
+    def test_a_fanart_background_is_a_feature_that_needs_a_newer_plugin(self):
+        def fanart(d):
+            d["background"] = {"source": "fanart", "fanartId": "47835", "dim": 0.5}
+        self.edit_menu(fanart)
+        problems, entries = self.check()
+        self.assertEqual([], [p for p in problems if p.severity == "error"])
+        entry = next(e for e in entries if e.menu["menuId"] == INCEPTION)
+        self.assertIn("fanart-background", entry.features)
+        self.assertEqual({"fanart"}, {b for b in entry.backgrounds})
+
+    def test_fanart_id_must_be_digits(self):
+        for bad in ("abc", "", "../1"):
+            self.edit_menu(lambda d, b=bad: d.update(background={"source": "fanart", "fanartId": b}))
+            self.assertTrue(self.errors(), repr(bad))
+
     # ---- text
     def test_markup_in_author(self):
         def bad(d):

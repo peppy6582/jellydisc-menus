@@ -23,7 +23,7 @@
     var PICTURE_KEYS = { Image: 1, ImageFocus: 1, Poster: 1 };
     // Keys whose string value is a sound; an external one becomes silence.
     var SOUND_KEYS = { File: 1, Move: 1, Select: 1, Back: 1 };
-    var REPLACED_SOURCES = { jellyfin: 1, trailer: 1, tmdb: 1 };
+    var REPLACED_SOURCES = { jellyfin: 1, trailer: 1, tmdb: 1, fanart: 1 };
 
     function validMenuPath(p) {
         return typeof p === 'string' && MENU_PATH.test(p);

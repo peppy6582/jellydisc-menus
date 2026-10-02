@@ -34,6 +34,7 @@ test("external and generated backgrounds become placeholders", () => {
       b: { Background: { Source: "trailer" } },
       c: { Background: { Source: "image", Image: "asset:x/bg.webp" } },
       d: { Background: { Source: "image", Image: "https://evil.example/x.png" } },
+      f: { Background: { Source: "fanart", FanartId: "47835" } },   // needs the owner's fanart.tv key: never on a public page
       e: { Background: { Source: "color", Color: "#123456" } },
     },
   };
@@ -41,7 +42,7 @@ test("external and generated backgrounds become placeholders", () => {
   assert.equal(out.Background.Source, "image");
   assert.equal(out.Background.Dim, 0.2);
   assert.match(out.Background.Image, /^data:image\/png/);
-  for (const k of "abcd") assert.match(out.Menus[k].Background.Image, /^data:image\/png/, k);
+  for (const k of "abcdf") assert.match(out.Menus[k].Background.Image, /^data:image\/png/, k);
   assert.equal(JSON.stringify(out.Menus.e.Background), JSON.stringify({ Source: "color", Color: "#123456" }));
   assert.ok(!/https?:|asset:|tmdb|jellyfin|trailer/i.test(JSON.stringify(out).replace(/"Source":"image"/g, "")));
 });

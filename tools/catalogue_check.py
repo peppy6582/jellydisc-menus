@@ -181,6 +181,8 @@ def detect_features(menu):
         features.add("trailer")
     if "tmdb" in backgrounds:
         features.add("tmdb-background")
+    if "fanart" in backgrounds:
+        features.add("fanart-background")
     return features, backgrounds
 
 

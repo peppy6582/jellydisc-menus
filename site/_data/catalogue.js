@@ -17,6 +17,7 @@ const FEATURES = [
   ["audio", "Music and sounds", "feature"],
   ["transitions", "Transitions", "feature"],
   ["tmdb-background", "TMDB backdrops", "feature"],
+  ["fanart-background", "fanart.tv artwork", "feature"],
   ["layers", "Banner and panels", "feature"],
 ];
 
