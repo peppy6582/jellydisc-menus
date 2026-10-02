@@ -376,6 +376,13 @@ class Index(unittest.TestCase):
     def menu_path():
         return f"{INCEPTION_DIR}/{INCEPTION}.menu.json"
 
+    def test_extras_count_is_the_number_the_menu_lists(self):
+        index = self.build()
+        for e in index["entries"]:
+            with open(os.path.join(ROOT, "menus", e["match"]["itemType"] == "Movie" and "movie" or "tv", e["match"]["providerIds"]["Tmdb"], e["menuId"] + ".menu.json"), encoding="utf-8") as f:
+                self.assertEqual(len(json.load(f).get("extras") or {}), e["extras"], e["title"])
+        self.assertTrue(any(e["extras"] > 0 for e in index["entries"]))
+
     def test_demo_and_art_flags(self):
         index = self.build()
         dk = next(e for e in index["entries"] if e["menuId"] == DARK_KNIGHT)

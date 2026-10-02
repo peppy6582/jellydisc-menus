@@ -114,6 +114,7 @@ def build(root, plugin_dir, out, generated, history=True):
             "size": len(e.raw),
             "features": e.features,
             "backgrounds": e.backgrounds,
+            "extras": len(menu.get("extras") or {}),
             "needsLocalArt": e.needs_art,
             "demo": bool(listing.get("demo", False)),
             "page": f"menus/{mid}/",

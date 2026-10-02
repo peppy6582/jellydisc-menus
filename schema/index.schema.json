@@ -57,6 +57,7 @@
         "size": { "type": "integer", "minimum": 1 },
         "features": { "description": "Which optional features the menu uses (for filtering and badges).", "type": "array", "items": { "type": "string" } },
         "backgrounds": { "type": "array", "items": { "type": "string" } },
+        "extras": { "description": "How many extras (special features) the menu lists. 0 means it has no playable extras, so a library without extras loses nothing.", "type": "integer", "minimum": 0 },
         "needsLocalArt": { "description": "asset: files the menu refers to. The catalogue hosts none: the user must supply art with these names.", "type": "array", "items": { "type": "string" } },
         "demo": { "type": "boolean" },
         "page": { "description": "The menu's page on the site, relative to baseUrl.", "type": "string" },
