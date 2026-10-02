@@ -5,6 +5,8 @@ export default function (eleventyConfig) {
   const dir = process.env.CATALOGUE_DIR || "_catalogue";
   eleventyConfig.addPassthroughCopy({ [`${dir}/v1`]: "v1", [`${dir}/schema`]: "schema" });
   eleventyConfig.addPassthroughCopy({ "site/assets": "assets" });
+  // The renderer and adapter from the plugin, pinned (see tools/vendor_sync.py and vendor/VERSION.json).
+  eleventyConfig.addPassthroughCopy({ vendor: "assets/vendor" });
   eleventyConfig.setQuietMode(true);
   return {
     dir: { input: "site", includes: "_includes", data: "_data", output: "_site" },

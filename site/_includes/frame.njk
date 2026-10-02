@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+{# The renderer runs here, on a menu from the catalogue. It may only load this site's own files, and pictures it
+   draws itself (data:). The one variant with image.tmdb.org exists for a visitor who explicitly asked for real backdrops. #}
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:{% if realTmdb %} https://image.tmdb.org{% endif %}; media-src data:; connect-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Menu preview</title>
+<link rel="stylesheet" href="{{ '/assets/frame.css' | url }}">
+</head>
+<body data-base="{{ '/' | url }}" data-real-tmdb="{{ '1' if realTmdb else '0' }}">
+<script src="{{ '/assets/harness-core.js' | url }}"></script>
+<script src="{{ '/assets/harness-boot.js' | url }}"></script>
+<script src="{{ '/assets/vendor/menu-to-renderable.js' | url }}"></script>
+<script src="{{ '/assets/vendor/discmenus.js' | url }}"></script>
+<script src="{{ '/assets/harness-run.js' | url }}"></script>
+</body>
+</html>

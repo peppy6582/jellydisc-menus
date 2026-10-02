@@ -32,6 +32,9 @@ export default function () {
 
     return {
       ...e,
+      backgrounds: e.backgrounds || [],
+      needsLocalArt: e.needsLocalArt || [],
+      features: e.features || [],
       kind,
       raw,
       screens,

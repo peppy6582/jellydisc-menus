@@ -55,6 +55,8 @@ See [POLICY.md](POLICY.md) for takedowns, privacy and moderation.
 
 ## The website
 
+Each menu page has an **interactive preview**: the plugin's real renderer, running in the browser on generated placeholder pictures (nothing is fetched from outside the site; playing is switched off and sound starts off). The renderer and the menu adapter are copied unchanged from the plugin commit pinned in `plugin.lock.json` into `vendor/` by `tools/vendor_sync.py`, and CI fails if they drift. A visitor can opt in to real TMDB backdrops, which switches to a second frame page whose content-security policy allows `image.tmdb.org`.
+
 `site/` is an [Eleventy](https://www.11ty.dev) site built from the catalogue folder that `tools/build_index.py` writes, so it can only show menus that passed every check. Security is by construction: Nunjucks escapes everything, there is no inline script or style, and the content-security policy allows nothing third-party. `npm test` builds it from a deliberately hostile catalogue to prove it.
 
 ```bash

@@ -111,3 +111,24 @@ test("a menu that doesn't match its hash stops the build", () => {
 });
 
 test.after(() => fs.rmSync(tmp, { recursive: true, force: true }));
+
+test("the preview frames: strict by default, TMDB images only in the variant a visitor opts into", () => {
+  const strict = html["preview/frame/index.html"], tmdb = html["preview/frame-tmdb/index.html"];
+  assert.ok(strict && tmdb);
+  assert.ok(!strict.includes("image.tmdb.org"));
+  assert.match(tmdb, /img-src 'self' data: https:\/\/image\.tmdb\.org;/);
+  for (const text of [strict, tmdb]) {
+    assert.match(text, /connect-src 'self' data:/);
+    assert.match(text, /frame-src 'none'/);
+    assert.match(text, /script-src 'self';/);
+    assert.ok(!/unsafe-/.test(text));
+  }
+});
+
+test("a menu page embeds its preview without opening it to anything else", () => {
+  const page = html["menus/11111111-2222-4333-8444-555555555555/index.html"];
+  assert.match(page, /id="preview-frame"/);
+  assert.match(page, /data-menu="v1\/menus\/11111111-2222-4333-8444-555555555555\/1\.menu\.json"/);
+  assert.ok(!/<iframe[^>]*\ssrc=/.test(page), "the frame's address is set by script from a validated path");
+  assert.ok(!page.includes("image.tmdb.org"));
+});

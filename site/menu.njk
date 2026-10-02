@@ -25,6 +25,25 @@ eleventyComputed:
     <a class="button ghost" href="{{ e.url | url }}">View the raw JSON</a>
   </p>
 
+  <section id="preview" class="preview" data-menu="{{ e.url }}" data-pagefind-ignore>
+    <h2>Preview</h2>
+    <div id="preview-stage" class="stage"><iframe id="preview-frame" title="Interactive preview of the menu" tabindex="0"></iframe></div>
+    <p class="muted small">A <strong>layout preview</strong> with generated placeholder pictures: your server supplies the real backgrounds, and playing is switched off.
+    Use the mouse, or <button type="button" id="preview-focus" class="linkish">click here</button> and then the arrow keys, Enter and Escape.</p>
+    <p class="controls">
+      <button type="button" id="preview-mute" aria-pressed="false">Sound: off</button>
+      {% for s in e.screens %}<button type="button" data-screen="{{ s.key }}">{{ s.title }}</button>{% endfor %}
+    </p>
+    {% if "tmdb" in e.backgrounds %}
+    <p class="small"><label><input type="checkbox" id="preview-tmdb"> Show the film's real TMDB backdrop. This loads images from image.tmdb.org, which can then see your address.</label></p>
+    {% endif %}
+    <p id="preview-status" class="muted small" aria-live="polite"></p>
+    <noscript><p>The preview needs JavaScript.</p></noscript>
+  </section>
+  <script src="{{ '/assets/harness-core.js' | url }}"></script>
+  <script src="{{ '/assets/vendor/menu-to-renderable.js' | url }}"></script>
+  <script src="{{ '/assets/menu-preview.js' | url }}"></script>
+
   {% if e.needsLocalArt.length %}
   <aside class="notice">
     <h2>Bring your own art</h2>

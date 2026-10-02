@@ -31,6 +31,8 @@ jobs:
         run: python3 -W ignore -m unittest discover -s tools -p "test_*.py"
         env:
           PLUGIN_DIR: ${{ github.workspace }}/plugin
+      - name: The vendored renderer is exactly the pinned plugin's
+        run: python3 tools/vendor_sync.py --plugin plugin --check
 
   menus:
     name: Check every menu

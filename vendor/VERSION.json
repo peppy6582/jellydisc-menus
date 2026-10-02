@@ -1,0 +1,11 @@
+{
+  "plugin": "peppy6582/jellydisc",
+  "ref": "0a5203650143544e993594e1ae757a7e99521517",
+  "supportedMenuSchemaVersions": [
+    1
+  ],
+  "files": {
+    "discmenus.js": "686eb933c8073e3b136853ea02089b51d946fd0c8c70b2ba5af028eec9b4454c",
+    "menu-to-renderable.js": "d64bec2bd819635698356f36820680a1d6f3a775464b2deec71730d64d51af66"
+  }
+}
