@@ -1,0 +1,75 @@
+---
+layout: base.njk
+pagination:
+  data: catalogue.entries
+  size: 1
+  alias: e
+permalink: "menus/{{ e.menuId }}/index.html"
+eleventyComputed:
+  title: "{{ e.title }}"
+  description: "{{ e.description }}"
+---
+<article data-pagefind-body>
+  <p class="crumbs"><a href="{{ '/menus/' | url }}">Browse</a> /</p>
+  <h1 data-pagefind-meta="title">{{ e.title }}{% if e.year %} <span class="year">({{ e.year }})</span>{% endif %}</h1>
+  {% if e.originalTitle %}<p class="muted">{{ e.originalTitle }}</p>{% endif %}
+  <p class="lead">{{ e.description }}</p>
+  <p class="meta">
+    <span class="pill">{{ 'Movie' if e.kind == 'movie' else 'Series' }}</span>
+    {% if e.demo %}<span class="pill demo">demonstration menu</span>{% endif %}
+    {% for t in e.tags %}<span class="pill tag" data-pagefind-filter="tag">{{ t }}</span>{% endfor %}
+  </p>
+
+  <p class="actions">
+    <a class="button" href="{{ e.url | url }}" download="{{ e.menuId }}.menu.json">Download menu</a>
+    <a class="button ghost" href="{{ e.url | url }}">View the raw JSON</a>
+  </p>
+
+  {% if e.needsLocalArt.length %}
+  <aside class="notice">
+    <h2>Bring your own art</h2>
+    <p>This menu refers to picture or sound files that the catalogue does not host. Put files with these names in
+    <code>assets/{{ e.menuId }}/</code> inside your menus folder:</p>
+    <ul>{% for a in e.needsLocalArt %}<li><code>{{ a }}</code></li>{% endfor %}</ul>
+    <p>Without them the menu still works; those parts just show nothing.</p>
+  </aside>
+  {% endif %}
+
+  <h2>What's in it</h2>
+  <ul class="screens">
+  {% for s in e.screens %}
+    <li><strong>{{ s.title }}</strong>{% if s.labels.length %}: {{ s.labels | join(' · ') }}{% endif %}</li>
+  {% endfor %}
+  </ul>
+
+  <h2>Details</h2>
+  <dl class="facts">
+    <dt>Author</dt><dd>{% if e.author.github %}<a href="{{ ('https://github.com/' + e.author.github) }}">{{ e.author.name }}</a>{% else %}{{ e.author.name }}{% endif %}</dd>
+    <dt>Licence</dt><dd>CC0 1.0 (public domain)</dd>
+    <dt>Revision</dt><dd>{{ e.revision }}</dd>
+    <dt>Needs plugin</dt><dd>{{ e.minPluginVersion }} or later</dd>
+    {% if e.language %}<dt>Language</dt><dd>{{ e.language }}</dd>{% endif %}
+    {% if e.release.edition or e.release.format %}<dt>For release</dt><dd>{{ [e.release.edition, e.release.format, e.release.region] | select | join(' · ') }}</dd>{% endif %}
+    <dt>Matches</dt><dd>{% for i in e.ids %}<code>{{ i.name }} {{ i.value }}</code> {% endfor %}{% if e.tmdbUrl %}<a href="{{ e.tmdbUrl }}">on TMDB</a>{% endif %}</dd>
+    <dt>Uses</dt><dd>{% for f in e.features %}<span class="pill">{{ f }}</span> {% endfor %}</dd>
+    <dt>File</dt><dd>{{ e.size }} bytes · sha256 <code class="hash">{{ e.sha256 }}</code></dd>
+  </dl>
+
+  {% if e.changelog %}
+  <h2>Changes</h2>
+  <ul class="changes">{% for c in e.changelog %}<li><strong>Revision {{ c.revision }}</strong> ({{ c.date }}): {{ c.notes }}</li>{% endfor %}</ul>
+  {% endif %}
+
+  <h2>Use it</h2>
+  <ol>
+    <li>Download the file above and copy it into the plugin's menus folder.</li>
+    <li>Make sure the title with the matching id is in your Jellyfin library. The plugin finds it by those ids.</li>
+    <li>Open the title and press <em>Disc Menu</em>. The <strong>Menu Files</strong> table on the plugin's dashboard page shows how it matched.</li>
+  </ol>
+  <p><a href="{{ e.sourceUrl }}">Source on GitHub</a> · <a href="{{ e.historyUrl }}">Earlier revisions</a></p>
+
+  <details>
+    <summary>Show the JSON</summary>
+    <pre class="json"><code>{{ e.raw }}</code></pre>
+  </details>
+</article>

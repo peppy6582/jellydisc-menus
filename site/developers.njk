@@ -1,0 +1,24 @@
+---
+layout: base.njk
+title: For developers
+description: How client apps and the plugin use the catalogue index.
+---
+<h1>For client developers</h1>
+<p class="lead">The catalogue is a set of static files. One public index describes every menu; a client downloads it and
+matches it <strong>locally</strong> against its own library. Nothing about a library is ever sent anywhere.</p>
+
+<h2>The index</h2>
+<p><a href="{{ '/v1/index.json' | url }}"><code>v1/index.json</code></a>, described by <a href="{{ '/schema/v1/index.schema.json' | url }}">its JSON Schema</a>.
+Within format version 1 fields are only ever added, so ignore fields you don't know. A breaking change would appear under <code>/v2/</code> and leave <code>/v1/</code> alone.</p>
+<ul>
+  <li><code>entries[].match</code> is the menu's own <code>match</code> block: item type and provider ids to compare with your library.</li>
+  <li><code>entries[].url</code> is relative to <code>baseUrl</code>. A revision's file never changes and never disappears. Check <code>sha256</code> before you install it.</li>
+  <li><code>minPluginVersion</code> and <code>features</code> say what a client must support. <code>needsLocalArt</code> lists files the user must supply.</li>
+  <li><code>withdrawn</code> lists menus that were removed, so you can tell a user who installed one.</li>
+</ul>
+
+<h2>The menu format</h2>
+<p>Menus follow the plugin's <a href="https://github.com/peppy6582/jellydisc/blob/main/schema/menu.schema.json">menu schema</a>. Treat every menu as
+untrusted: render text as text, never as markup, and build URLs only from validated pieces.
+The plugin's reference renderer and its tests are in the <a href="https://github.com/peppy6582/jellydisc">main repository</a>.</p>
+<p>The index right now lists <strong>{{ catalogue.count }}</strong> menu{{ '' if catalogue.count == 1 else 's' }}, generated {{ catalogue.generated }}.</p>

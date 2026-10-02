@@ -1,0 +1,20 @@
+---
+layout: base.njk
+title: Add a menu
+---
+<h1>Add a menu</h1>
+<p class="lead">Anyone can contribute. A menu goes in by pull request on GitHub, and an automatic check tells you what to fix.</p>
+<ol class="steps">
+  <li><strong>Make it.</strong> Draft one from your library with the plugin, or write it by hand, then refine it in the plugin's Menu Editor. See
+  <a href="https://github.com/peppy6582/jellydisc/blob/main/docs/AUTHORING.md">Authoring menus</a>.</li>
+  <li><strong>File it.</strong> <code>menus/movie/&lt;TMDB id&gt;/&lt;menuId&gt;.menu.json</code>, with a <code>.listing.json</code> beside it that gives the title, a short description and tags.</li>
+  <li><strong>Check it.</strong> <code>python3 tools/catalogue_check.py</code> runs the same rules as the pull request.</li>
+  <li><strong>Open a pull request.</strong> You dedicate the menu to the public domain (CC0 1.0) and confirm it has no studio material.</li>
+</ol>
+<p><a class="button" href="https://github.com/peppy6582/jellydisc-menus/blob/main/CONTRIBUTING.md">Read the contributing guide</a></p>
+<h2>The rules, briefly</h2>
+<ul>
+  <li>No studio posters, stills, logos, music or video, and no links to any. External image and audio links are not accepted yet.</li>
+  <li>A real menu, not an unedited draft: labels a viewer would expect, not ripped file names.</li>
+  <li>Changing a menu means raising its <code>revision</code> and saying what changed.</li>
+</ul>

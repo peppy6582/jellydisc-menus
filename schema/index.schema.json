@@ -60,6 +60,7 @@
         "needsLocalArt": { "description": "asset: files the menu refers to. The catalogue hosts none: the user must supply art with these names.", "type": "array", "items": { "type": "string" } },
         "demo": { "type": "boolean" },
         "page": { "description": "The menu's page on the site, relative to baseUrl.", "type": "string" },
+        "changelog": { "description": "What changed in each revision, newest first.", "type": "array", "items": { "type": "object", "required": ["revision", "date", "notes"], "properties": { "revision": { "type": "integer" }, "date": { "type": "string" }, "notes": { "type": "string" } } } },
         "updated": { "type": "string" }
       }
     }

@@ -1,0 +1,30 @@
+---
+layout: base.njk
+description: Shareable DVD and Blu-ray style menus for Jellyfin, in public-domain JSON.
+---
+<section class="hero">
+  <h1>Disc menus for your own library</h1>
+  <p class="lead">Rediscover the "Play Movie / Scene Selection / Special Features" screen. Each menu here is a small public-domain JSON file
+  for a film or series. The <a href="https://github.com/peppy6582/jellydisc">Disc Menus plugin for Jellyfin</a> matches it to the right title in
+  your library by its TMDB, IMDb or TVDB id.</p>
+  <p><a class="button" href="{{ '/menus/' | url }}">Browse {{ catalogue.count }} menu{{ '' if catalogue.count == 1 else 's' }}</a>
+  <a class="button ghost" href="{{ '/submit/' | url }}">Add one</a></p>
+</section>
+
+<section>
+  <h2>How it works</h2>
+  <ol class="steps">
+    <li><strong>Pick a menu</strong> for a title you own and download its <code>.menu.json</code>.</li>
+    <li><strong>Drop it</strong> in the plugin's menus folder.</li>
+    <li><strong>Open the title</strong> in Jellyfin and press <em>Disc Menu</em>. The plugin links the extras for you.</li>
+  </ol>
+  <p>Menus describe layout and structure only. Backgrounds come from your own server or the film's TMDB backdrop; some menus
+  can use art files you supply, and those are labelled <em>bring your own art</em>.</p>
+</section>
+
+<section>
+  <h2>Latest menus</h2>
+  <ul class="cards">
+  {% for e in catalogue.entries | reverse %}{% if loop.index <= 6 %}{% include "card.njk" %}{% endif %}{% endfor %}
+  </ul>
+</section>

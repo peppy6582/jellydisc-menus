@@ -76,3 +76,33 @@ jobs:
           name: check-result
           path: check-result.json
           if-no-files-found: ignore
+
+  site:
+    name: Build and test the site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Read the pinned plugin commit
+        id: lock
+        run: echo "ref=$(jq -r .ref plugin.lock.json)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: peppy6582/jellydisc
+          ref: ${{ steps.lock.outputs.ref }}
+          path: plugin
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: pip install jsonschema
+      - run: python3 tools/build_index.py --plugin plugin --out _catalogue
+      - run: npm ci --no-audit --no-fund
+      - name: Tests (hostile-menu escaping, CSP, no third-party loads)
+        run: npm test
+      - name: Build
+        run: npm run build

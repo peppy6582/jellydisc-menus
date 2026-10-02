@@ -1,0 +1,11 @@
+---
+layout: base.njk
+title: Search
+permalink: /search/index.html
+---
+<h1>Search</h1>
+<form id="s-form" role="search"><label>Search menus <input type="search" id="s-q" autocomplete="off" placeholder="A film, a tag, a word"></label></form>
+<p id="s-status" class="muted" aria-live="polite"></p>
+<ul class="cards" id="s-results"></ul>
+<noscript><p>Search needs JavaScript. You can <a href="{{ '/menus/' | url }}">browse the list</a> instead.</p></noscript>
+<script src="{{ '/assets/search.js' | url }}" type="module"></script>

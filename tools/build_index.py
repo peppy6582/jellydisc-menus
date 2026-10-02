@@ -118,6 +118,8 @@ def build(root, plugin_dir, out, generated, history=True):
             "demo": bool(listing.get("demo", False)),
             "page": f"menus/{mid}/",
         })
+        if listing.get("changelog"):
+            entry["changelog"] = sorted(listing["changelog"], key=lambda c: -c["revision"])
         index_entries.append(entry)
 
     index = {

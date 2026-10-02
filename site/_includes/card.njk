@@ -1,0 +1,10 @@
+<li class="card" data-type="{{ e.kind }}" data-tags="{{ e.tags | join(' ') }}" data-features="{{ e.features | join(' ') }}" data-text="{{ e.searchText }}">
+  <h3><a href="{{ ('/' + e.page) | url }}">{{ e.title }}</a>{% if e.year %} <span class="year">{{ e.year }}</span>{% endif %}</h3>
+  <p>{{ e.description }}</p>
+  <p class="meta">
+    <span class="pill">{{ 'Movie' if e.kind == 'movie' else 'Series' }}</span>
+    {% if e.demo %}<span class="pill demo">demonstration</span>{% endif %}
+    {% if e.needsLocalArt.length %}<span class="pill art">bring your own art</span>{% endif %}
+    {% for t in e.tags %}<span class="pill tag">{{ t }}</span>{% endfor %}
+  </p>
+</li>

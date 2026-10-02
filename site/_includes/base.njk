@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{# GitHub Pages can't send headers, so the policy is a meta tag: no inline script or style, nothing third-party. #}
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; frame-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<title>{% if title %}{{ title }} · {% endif %}Disc Menus catalogue</title>
+{% if description %}<meta name="description" content="{{ description }}">{% endif %}
+<link rel="stylesheet" href="{{ '/assets/site.css' | url }}">
+</head>
+<body data-base="{{ '/' | url }}">
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="{{ '/' | url }}">Disc Menus <span>catalogue</span></a>
+    <nav aria-label="Main">
+      <a href="{{ '/menus/' | url }}">Browse</a>
+      <a href="{{ '/search/' | url }}">Search</a>
+      <a href="{{ '/submit/' | url }}">Add a menu</a>
+      <a href="{{ '/developers/' | url }}">For developers</a>
+      <a href="{{ '/about/' | url }}">About</a>
+    </nav>
+  </div>
+</header>
+<main id="main" class="wrap">
+{{ content | safe }}
+</main>
+<footer class="wrap foot">
+  <p>Menus are public domain (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a>). The catalogue holds no artwork, music or video.
+  A community project, not affiliated with Jellyfin or TMDB. <a href="{{ '/about/' | url }}">About, privacy and takedowns</a>.</p>
+</footer>
+</body>
+</html>

@@ -4,7 +4,7 @@ A shared, public-domain collection of **DVD and Blu-ray style menus** for the
 [Disc Menus plugin for Jellyfin](https://github.com/peppy6582/jellydisc). Each menu is a small JSON file filed under
 the film or series it is for. The plugin matches it to the right title in your library by its TMDB / IMDb / TVDB id.
 
-> **Status: early.** Five demonstration menus so far, and no website yet (it is next). Community project; not affiliated
+> **Status: early.** Five demonstration menus so far, and a static website (Eleventy + Pagefind) that GitHub Pages publishes from `main`. Community project; not affiliated
 > with Jellyfin or TMDB.
 
 ## What's here
@@ -52,3 +52,13 @@ python3 tools/catalogue_check.py
 - **The tools and workflows** are [GPL-3.0-only](LICENSE), like the plugin.
 
 See [POLICY.md](POLICY.md) for takedowns, privacy and moderation.
+
+## The website
+
+`site/` is an [Eleventy](https://www.11ty.dev) site built from the catalogue folder that `tools/build_index.py` writes, so it can only show menus that passed every check. Security is by construction: Nunjucks escapes everything, there is no inline script or style, and the content-security policy allows nothing third-party. `npm test` builds it from a deliberately hostile catalogue to prove it.
+
+```bash
+python3 tools/build_index.py --plugin ../jellyfin-disc-menus --out _catalogue
+npm ci && npm run build        # writes _site/ (on a filesystem that allows symlinks)
+npm test
+```

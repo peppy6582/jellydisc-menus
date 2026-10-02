@@ -1,0 +1,24 @@
+---
+layout: base.njk
+title: Browse
+permalink: /menus/index.html
+---
+<h1>Browse menus</h1>
+<form class="filters" id="filters" aria-label="Filter menus">
+  <label>Find <input type="search" id="f-text" placeholder="Title or tag" autocomplete="off"></label>
+  <label>Kind
+    <select id="f-type"><option value="">All</option><option value="movie">Movies</option><option value="tv">Series</option></select>
+  </label>
+  <label>Tag
+    <select id="f-tag"><option value="">Any</option>{% for t in catalogue.tags %}<option>{{ t }}</option>{% endfor %}</select>
+  </label>
+  <label>Feature
+    <select id="f-feature"><option value="">Any</option>{% for f in catalogue.features %}<option>{{ f }}</option>{% endfor %}</select>
+  </label>
+</form>
+<p id="f-count" class="muted" aria-live="polite"></p>
+<ul class="cards" id="cards">
+{% for e in catalogue.entries %}{% include "card.njk" %}{% endfor %}
+</ul>
+<p id="f-none" class="muted" hidden>Nothing matches those filters.</p>
+<script src="{{ '/assets/filter.js' | url }}"></script>
