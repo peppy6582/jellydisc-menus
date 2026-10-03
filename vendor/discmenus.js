@@ -13,9 +13,11 @@
 // playItems). If that fails they fall back to navigating to the item's
 // details page. After playback stops the menu reopens where it was left.
 //
-// KNOWN LIMITATIONS:
-// - background.source "fanart" isn't implemented - falls back to a plain dark
-//   background. "jellyfin", "tmdb", "image", "trailer" and "color" work.
+// BACKGROUNDS: "jellyfin", "tmdb", "fanart", "image", "trailer" and "color" work.
+// "fanart" asks this server (GET DiscMenus/Fanart/{item}/{id}), which looks the
+// picture up on fanart.tv with the administrator's API key and caches it, so the
+// viewer never contacts fanart.tv. Without a key (or for an unknown picture) it
+// shows the plain dark background.
 (function () {
     'use strict';
 
@@ -376,6 +378,20 @@
     // can ever be appended to the fixed TMDB host.
     var TMDB_PATH = /^\/[A-Za-z0-9_-]+\.(jpg|png)$/;
 
+    // fanart.tv's numeric image id, and the library item it is asked about. Both are validated here (the schema and loader
+    // already did) so only digits and a GUID can ever be put into the server path.
+    var FANART_ID = /^[0-9]{1,12}$/;
+    var ITEM_ID = /^[0-9a-fA-F-]{32,36}$/;
+
+    function fanartImageUrl(background, parentItemId) {
+        if (typeof background.FanartId !== 'string' || !FANART_ID.test(background.FanartId)
+            || typeof parentItemId !== 'string' || !ITEM_ID.test(parentItemId) || !window.ApiClient) {
+            return null;
+        }
+
+        return ApiClient.getUrl('DiscMenus/Fanart/' + parentItemId + '/' + background.FanartId);
+    }
+
     function tmdbImageUrl(background) {
         if (typeof background.TmdbFilePath !== 'string' || !TMDB_PATH.test(background.TmdbFilePath)) {
             return null;
@@ -396,6 +412,7 @@
         all.forEach(function (b) {
             var url = !b ? null
                 : b.Source === 'tmdb' ? tmdbImageUrl(b)
+                : b.Source === 'fanart' ? fanartImageUrl(b, parentItemId)
                 : b.Source === 'image' ? safeImage(b.Image)
                 : b.Source === 'jellyfin' && window.ApiClient
                     ? ApiClient.getImageUrl(parentItemId, { type: b.ImageType || 'Backdrop', index: b.Index || 0 })
@@ -423,6 +440,18 @@
             if (tmdbUrl) {
                 return (
                     'background-image:linear-gradient(rgba(0,0,0,' + dim + '),rgba(0,0,0,' + dim + ')),url(' + tmdbUrl + ');' +
+                    'background-size:cover;background-position:center;background-color:#101010;'
+                );
+            }
+
+            return 'background-color:#101010;';
+        }
+
+        if (background.Source === 'fanart') {
+            var fanartUrl = fanartImageUrl(background, parentItemId);
+            if (fanartUrl) {
+                return (
+                    'background-image:linear-gradient(rgba(0,0,0,' + dim + '),rgba(0,0,0,' + dim + ')),url(' + fanartUrl + ');' +
                     'background-size:cover;background-position:center;background-color:#101010;'
                 );
             }
@@ -459,7 +488,6 @@
             );
         }
 
-        // tmdb/fanart sources: not implemented yet, see file header.
         return 'background-color:#101010;';
     }
 

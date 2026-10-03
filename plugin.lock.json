@@ -1,5 +1,5 @@
 {
   "repo": "peppy6582/jellydisc",
-  "ref": "0a5203650143544e993594e1ae757a7e99521517",
+  "ref": "e7090d189b7f481219fe6a9a1e7ad8c186260583",
   "note": "The plugin commit whose schema, menu checker and renderer this catalogue is checked against. Bumped by a pull request (see .github/workflows/bump-plugin.yml, later) that re-validates every menu."
 }

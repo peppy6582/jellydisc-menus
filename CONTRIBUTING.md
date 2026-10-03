@@ -28,6 +28,11 @@ Menus, fixes and improvements are welcome. A pull request is the only way in for
    ones): title, a short description, tags, your name, and `artSources` (`none`, or where the art files come from).
 4. Run `python3 tools/catalogue_check.py` and fix what it says. The same check runs on your pull request.
 
+## Using AI tools
+
+This catalogue is itself built with an AI coding assistant (see the [README](README.md)), so using one to help make a menu is fine. You still stand behind what you submit: say so in the pull request if an AI
+tool helped, check the result yourself, make sure the menu is yours to dedicate to the public domain, and write the pull request description (or issue) in your own words.
+
 ## Changing a menu
 
 Edit the file and **raise `revision`**, then add a `changelog` entry to the listing saying what changed. Earlier revisions

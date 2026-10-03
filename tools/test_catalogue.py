@@ -178,7 +178,7 @@ class Catalogue(unittest.TestCase):
         self.assertEqual({"fanart"}, {b for b in entry.backgrounds})
 
     def test_fanart_id_must_be_digits(self):
-        for bad in ("abc", "", "../1"):
+        for bad in ("abc", "", "1234567890123", "../1"):
             self.edit_menu(lambda d, b=bad: d.update(background={"source": "fanart", "fanartId": b}))
             self.assertTrue(self.errors(), repr(bad))
 
