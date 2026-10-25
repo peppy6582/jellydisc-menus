@@ -34,6 +34,18 @@ MAX_DATA_URI_TOTAL = 48 * 1024     # all inline images in a menu
 
 # Keys whose string value is an image or audio reference.
 REF_KEYS = {"image", "imageFocus", "poster", "file", "move", "select", "back"}
+SOUND_KEYS = {"file", "move", "select", "back"}
+
+# Openly licensed art can be hosted with the catalogue: art/<menuId>/ holds the files and their CREDITS.txt, and the
+# site publishes them at ART_URL<menuId>/<file>. A menu may link to its own hosted files and to nothing else outside.
+ART_URL = "https://peppy6582.github.io/jellydisc-menus/v1/art/"
+ART_FILE = re.compile(r"^(?!.*\.\.)[a-z0-9][a-z0-9._-]{0,63}$")
+ART_CREDITS = "CREDITS.txt"
+PICTURE_EXT = {".png", ".jpg", ".jpeg", ".webp"}
+AUDIO_EXT = {".m4a", ".mp3", ".ogg", ".opus", ".wav"}
+MAX_ART_FILE = 2 * 1024 * 1024
+MAX_ART_FOLDER = 8 * 1024 * 1024
+MAX_CREDITS_BYTES = 16 * 1024
 
 # Names that look like they came straight from a ripped file, not a menu author. These are errors.
 RIP_LABEL = [
@@ -65,10 +77,11 @@ class Problem:
 class Entry:
     """One menu that passed everything, with what the index builder needs."""
 
-    def __init__(self, rel, menu_path, listing_path, menu, listing, raw, features, backgrounds, needs_art):
+    def __init__(self, rel, menu_path, listing_path, menu, listing, raw, features, backgrounds, needs_art, hosted_art=()):
         self.rel, self.menu_path, self.listing_path = rel, menu_path, listing_path
         self.menu, self.listing, self.raw = menu, listing, raw
         self.features, self.backgrounds, self.needs_art = features, backgrounds, needs_art
+        self.hosted_art = list(hosted_art)
         self.sha256 = hashlib.sha256(raw).hexdigest()
 
 
@@ -265,10 +278,104 @@ def check_catalogue(root, plugin_dir, base_dir=None, only=None):
         if rel.replace(".listing.json", ".menu.json") not in menu_set:
             err(rel, "this listing has no menu file beside it")
 
+    used_art = {e.menu["menuId"]: set(e.hosted_art) for e in entries}
+    _check_art(root, set(seen_ids), used_art if only is None else None, err, warn)
+
     if base_dir is not None:
         _check_against_base(root, base_dir, entries, seen_ids, withdrawn_ids, err)
 
     return problems, entries
+
+
+def hosted_art_name(value, menu_id):
+    """The file name if `value` links to this menu's own hosted art, else None."""
+    prefix = ART_URL + menu_id + "/"
+    if not value.startswith(prefix):
+        return None
+    name = value[len(prefix):]
+    return name if ART_FILE.match(name) and name != ART_CREDITS else None
+
+
+def _magic_ok(ext, head):
+    if ext == ".png":
+        return head.startswith(b"\x89PNG\r\n\x1a\n")
+    if ext in (".jpg", ".jpeg"):
+        return head.startswith(b"\xff\xd8\xff")
+    if ext == ".webp":
+        return head[:4] == b"RIFF" and head[8:12] == b"WEBP"
+    if ext == ".wav":
+        return head[:4] == b"RIFF" and head[8:12] == b"WAVE"
+    if ext == ".m4a":
+        return head[4:8] == b"ftyp"
+    if ext in (".ogg", ".opus"):
+        return head.startswith(b"OggS")
+    if ext == ".mp3":
+        return head.startswith(b"ID3") or (len(head) > 1 and head[0] == 0xFF and (head[1] & 0xE0) == 0xE0)
+    return False
+
+
+def _check_art(root, menu_ids, used, err, warn):
+    """art/<menuId>/: openly licensed pictures and sounds that a menu links to. Every folder belongs to a menu and
+    carries its credits, and holds only pictures and sounds that really are what their names say. `used` maps a
+    menuId to the files its menu links to (None skips the unused-file warning, when only some menus were checked)."""
+    art_dir = os.path.join(root, "art")
+    if not os.path.isdir(art_dir):
+        return
+    for name in sorted(os.listdir(art_dir)):
+        rel = "art/" + name
+        path = os.path.join(art_dir, name)
+        if os.path.islink(path):
+            err(rel, "symbolic links are not allowed")
+            continue
+        if not os.path.isdir(path) or not re.match(rf"^{UUID}$", name):
+            err(rel, "unexpected entry: hosted art lives in art/<menuId>/, one folder per menu")
+            continue
+        if name not in menu_ids:
+            err(rel, "no menu in the catalogue has this menuId")
+        files = sorted(os.listdir(path))
+        if ART_CREDITS not in files:
+            err(rel, f"missing {ART_CREDITS}: say where the files come from and under which licence")
+        total = 0
+        for fn in files:
+            frel = f"{rel}/{fn}"
+            fpath = os.path.join(path, fn)
+            if os.path.islink(fpath):
+                err(frel, "symbolic links are not allowed")
+                continue
+            if not os.path.isfile(fpath):
+                err(frel, "an art folder holds files only, no folders")
+                continue
+            size = os.path.getsize(fpath)
+            total += size
+            if fn == ART_CREDITS:
+                with open(fpath, "rb") as f:
+                    raw = f.read(MAX_CREDITS_BYTES + 1)
+                try:
+                    text = raw.decode("utf-8")
+                except UnicodeDecodeError:
+                    text = None
+                if len(raw) > MAX_CREDITS_BYTES or text is None or CONTROL.search(text) or not text.strip():
+                    err(frel, f"must be plain UTF-8 text of at most {MAX_CREDITS_BYTES // 1024} KB")
+                continue
+            ext = os.path.splitext(fn)[1]
+            if not ART_FILE.match(fn):
+                err(frel, "file names are lower-case letters, digits, '.', '_' and '-' (no '..')")
+                continue
+            if ext not in PICTURE_EXT | AUDIO_EXT:
+                err(frel, "only pictures (png, jpg, webp) and sounds (m4a, mp3, ogg, opus, wav) can be hosted")
+                continue
+            if size > MAX_ART_FILE:
+                err(frel, f"is {size} bytes; the limit is {MAX_ART_FILE} per file")
+                continue
+            with open(fpath, "rb") as f:
+                head = f.read(16)
+            if not _magic_ok(ext, head):
+                err(frel, f"is not really a {ext[1:]} file")
+                continue
+            if used is not None and fn not in used.get(name, set()):
+                warn(frel, "no menu links to this file")
+        if total > MAX_ART_FOLDER:
+            err(rel, f"holds {total} bytes; the limit is {MAX_ART_FOLDER} per menu")
 
 
 def _validator(schema_path):
@@ -345,7 +452,7 @@ def _check_menu(root, rel, menucheck, listing_validator, features_cfg, err, warn
             warn(rel, f"the label {label!r} looks auto-generated (from the plugin's draft builder); consider a real name")
 
     # 5. image and audio references
-    needs_art, data_total = [], 0
+    needs_art, hosted_art, data_total = [], [], 0
     for p, v in walk(doc):
         if not isinstance(v, str):
             continue
@@ -359,9 +466,21 @@ def _check_menu(root, rel, menucheck, listing_validator, features_cfg, err, warn
         if key in REF_KEYS:
             low = v.lower()
             if low.startswith("http://") or low.startswith("https://"):
-                err(rel, f"{where}: external image and audio links are not allowed in the catalogue yet "
-                         "(they are how studio artwork sneaks in, and the host sees every viewer's address)")
-                ok = False
+                name = hosted_art_name(v, doc["menuId"])
+                if name is None:
+                    err(rel, f"{where}: external image and audio links are not allowed in the catalogue (they are how "
+                             "studio artwork sneaks in, and the host sees every viewer's address). Openly licensed art "
+                             f"can be hosted here instead, in art/{doc['menuId']}/, and linked as "
+                             f"{ART_URL}{doc['menuId']}/<file>")
+                    ok = False
+                elif os.path.splitext(name)[1] not in (AUDIO_EXT if key in SOUND_KEYS else PICTURE_EXT):
+                    err(rel, f"{where}: {name} is not a {'sound' if key in SOUND_KEYS else 'picture'}")
+                    ok = False
+                elif not os.path.isfile(os.path.join(root, "art", doc["menuId"], name)):
+                    err(rel, f"{where}: links to art/{doc['menuId']}/{name}, which is not in the catalogue")
+                    ok = False
+                else:
+                    hosted_art.append(name)
             elif v.startswith("asset:"):
                 folder = v[len("asset:"):].split("/")[0]
                 if folder != doc["menuId"]:
@@ -399,7 +518,7 @@ def _check_menu(root, rel, menucheck, listing_validator, features_cfg, err, warn
                 if listing["menuId"] != doc["menuId"]:
                     err(lrel, "the listing's menuId must equal the menu's menuId")
                     ok = False
-                if needs_art and listing["artSources"].strip().lower() == "none":
+                if (needs_art or hosted_art) and listing["artSources"].strip().lower() == "none":
                     err(lrel, "the menu refers to art files, so artSources must say where they come from, not \"none\"")
                     ok = False
                 for item in listing.get("changelog", []):
@@ -413,10 +532,13 @@ def _check_menu(root, rel, menucheck, listing_validator, features_cfg, err, warn
     features, backgrounds = detect_features(doc)
     if needs_art:
         features.add("asset-art")
+    if hosted_art:
+        features.add("hosted-art")
     unknown = sorted(f for f in features if f not in features_cfg)
     for f in unknown:
         warn(rel, f"uses the feature {f!r}, which config/features.json doesn't list a plugin version for")
-    return Entry(rel, path, lpath, doc, listing, raw, sorted(features), sorted(backgrounds), sorted(set(needs_art)))
+    return Entry(rel, path, lpath, doc, listing, raw, sorted(features), sorted(backgrounds), sorted(set(needs_art)),
+                 sorted(set(hosted_art)))
 
 
 def _check_against_base(root, base_dir, entries, seen_ids, withdrawn_ids, err):

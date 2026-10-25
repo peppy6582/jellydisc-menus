@@ -6,9 +6,15 @@ Menus, fixes and improvements are welcome. A pull request is the only way in for
 
 1. **CC0.** You dedicate the menu to the public domain, and you have the right to. The pull request template asks you to say so.
 2. **No studio material.** No posters, stills, logos, music or video, and no links to any. `https` image and audio links are
-   rejected for now (they are how such material sneaks in, and they let a third party see who views a menu).
+   rejected (they are how such material sneaks in, and they let a third party see who views a menu).
    Allowed backgrounds: `jellyfin`, `tmdb` (the viewer's own server fetches the film's backdrop), `color`, `trailer`; flat
    panels; small inline `data:` icons; the built-in sounds; the title's own theme song.
+   **The exception is openly licensed art**, from a film released under a licence such as CC BY (the Blender open movies, for
+   example), or your own work. That can be hosted with the catalogue so the menu works with nothing to install: put the
+   files in `art/<menuId>/` beside a `CREDITS.txt` saying where they come from, under which licence and what you changed, and
+   link them as `https://peppy6582.github.io/jellydisc-menus/v1/art/<menuId>/<file>`. Pictures (png, jpg, webp) and sounds
+   (m4a, mp3, ogg, opus, wav) only, 2 MB a file and 8 MB a menu. A menu can link only to its own folder. This needs a pull
+   request (the form takes JSON only), and the maintainers check the licence.
 3. **A real menu, not a draft.** The plugin can draft a menu from your library; edit that into something a viewer would
    want. The checker rejects unedited drafts and labels that look like ripped file names (`Title_t01.mkv`).
 4. **Plain text.** No `<` or `>` and no control characters in anything that is shown on the site.

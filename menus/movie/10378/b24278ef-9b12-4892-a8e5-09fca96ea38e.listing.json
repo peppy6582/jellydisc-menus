@@ -1,0 +1,22 @@
+{
+  "listingVersion": 1,
+  "menuId": "b24278ef-9b12-4892-a8e5-09fca96ea38e",
+  "title": "Big Buck Bunny",
+  "description": "A full special edition: film-still backdrops, theme music, a picture-tile Special Features grid and a different look for each section, with all 31 extras from the 2008 DVD. Every file it needs is hosted here.",
+  "tags": [
+    "special-edition",
+    "picture-tiles",
+    "music",
+    "play-all",
+    "per-page-style",
+    "hosted-art",
+    "open-licence"
+  ],
+  "licence": "CC0-1.0",
+  "author": {
+    "name": "peppy6582",
+    "github": "peppy6582"
+  },
+  "artSources": "Hosted with the catalogue at v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/: stills, logo, music and buttons from the film and its 2008 DVD, CC BY 3.0 Blender Foundation (credits in CREDITS.txt).",
+  "demo": false
+}

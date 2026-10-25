@@ -6,6 +6,8 @@
  * The preview never fetches anything from outside this site: backgrounds from Jellyfin, TMDB or a trailer, and any
  * art file a menu refers to, become placeholders. The one exception is the visitor's explicit choice to show real
  * TMDB backdrops (realTmdb), which only the separate frame page with a matching content-security policy allows.
+ * Art the catalogue hosts itself (a link to ART_URL<menuId>/<file>) is shown for real, from this site's own copy: it
+ * becomes an asset:hosted/<menuId>/<file> reference, which the stand-in ApiClient serves from the site's v1/art/.
  */
 (function (root, factory) {
     var api = factory();
@@ -24,6 +26,9 @@
     // Keys whose string value is a sound; an external one becomes silence.
     var SOUND_KEYS = { File: 1, Move: 1, Select: 1, Back: 1 };
     var REPLACED_SOURCES = { jellyfin: 1, trailer: 1, tmdb: 1, fanart: 1 };
+    // Where the catalogue publishes hosted art (tools/catalogue_check.py ART_URL), and the one shape a link to it has.
+    var ART_URL = 'https://peppy6582.github.io/jellydisc-menus/v1/art/';
+    var ART_PATH = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/[a-z0-9][a-z0-9._-]{0,63}$/;
 
     function validMenuPath(p) {
         return typeof p === 'string' && MENU_PATH.test(p);
@@ -31,6 +36,16 @@
 
     function isObject(v) {
         return v !== null && typeof v === 'object' && !Array.isArray(v);
+    }
+
+    // The asset: reference the preview uses for a link to hosted art, or null when `v` is anything else.
+    function hostedArt(v) {
+        if (typeof v !== 'string' || v.indexOf(ART_URL) !== 0) {
+            return null;
+        }
+
+        var rest = v.slice(ART_URL.length);
+        return ART_PATH.test(rest) && !/\.\./.test(rest) ? 'asset:hosted/' + rest : null;
     }
 
     // Returns a copy of a renderer document in which nothing refers to anything outside the page.
@@ -55,8 +70,11 @@
 
                 var v = node[k];
                 var here = seed + '/' + k;
+                var hosted = (PICTURE_KEYS[k] || SOUND_KEYS[k]) ? hostedArt(v) : null;
                 if (k === 'Background' && isObject(v)) {
                     out[k] = background(v, here);
+                } else if (hosted) {
+                    out[k] = hosted;
                 } else if (PICTURE_KEYS[k] && typeof v === 'string' && !/^data:image\//.test(v)) {
                     out[k] = art(here, 'panel');
                 } else if (SOUND_KEYS[k] && typeof v === 'string' && /^(https?:)?\/\//i.test(v)) {
@@ -71,9 +89,15 @@
         function background(b, seed) {
             var source = b.Source;
             var keep = source === 'color' || source === 'none' || (source === 'tmdb' && realTmdb)
-                || (source === 'image' && typeof b.Image === 'string' && /^data:image\//.test(b.Image));
+                || (source === 'image' && typeof b.Image === 'string' && (/^data:image\//.test(b.Image) || hostedArt(b.Image)));
             if (keep) {
                 return walk(b, seed);
+            }
+
+            // a trailer (or other server-side picture) with a hosted poster: show the poster
+            var poster = hostedArt(b.Poster);
+            if (poster) {
+                return { Source: 'image', Image: poster, Dim: typeof b.Dim === 'number' ? b.Dim : 0.4 };
             }
 
             if (source === 'image' || REPLACED_SOURCES[source]) {
@@ -88,11 +112,19 @@
 
     var AUDIO_EXT = /\.(wav|mp3|ogg|opus|m4a|aac|flac)$/i;
 
-    // Stands in for Jellyfin's ApiClient. Sounds and music become silence; everything else resolves to nothing.
-    function fakeApiClient(silence) {
+    var HOSTED_ASSET = /^DiscMenus\/Assets\/hosted\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/[a-z0-9][a-z0-9._-]{0,63})$/;
+
+    // Stands in for Jellyfin's ApiClient. Hosted art comes from this site's art folder (artBase, for example
+    // '/jellydisc-menus/v1/art/'); other sounds and music become silence; everything else resolves to nothing.
+    function fakeApiClient(silence, artBase) {
         return {
             getUrl: function (path) {
                 var p = String(path || '');
+                var hosted = HOSTED_ASSET.exec(p);
+                if (hosted && typeof artBase === 'string' && hosted[1].indexOf('..') < 0) {
+                    return artBase + hosted[1];
+                }
+
                 if ((p.indexOf('DiscMenus/Assets/') === 0 && AUDIO_EXT.test(p)) || /^Audio\/[^/]+\/stream/.test(p)) {
                     return silence;
                 }
@@ -160,7 +192,7 @@
     }
 
     return {
-        validMenuPath: validMenuPath, placeholderize: placeholderize, fakeApiClient: fakeApiClient, silentWav: silentWav,
+        validMenuPath: validMenuPath, placeholderize: placeholderize, hostedArt: hostedArt, fakeApiClient: fakeApiClient, silentWav: silentWav,
         describePlay: describePlay, hash: hash, clock: clock,
     };
 });

@@ -31,7 +31,11 @@ permalink: "menus/{{ e.menuId }}/index.html"
       <iframe id="preview-frame" title="Interactive preview of the menu" tabindex="0"></iframe>
       {% if "tmdb" in e.backgrounds %}<label class="stage-toggle" title="Loads the image from image.tmdb.org; TMDB can then see your address"><input type="checkbox" id="preview-tmdb"> Show the real TMDB backdrop</label>{% endif %}
     </div>
+    {% if e.hostedArt.length %}
+    <p class="muted small">A <strong>live preview</strong> with the menu's own art, which the catalogue hosts{% if e.needsLocalArt.length or ("trailer" in e.backgrounds) %} (anything your server supplies, such as a trailer, shows as a placeholder or poster){% endif %}. Playing is switched off.
+    {% else %}
     <p class="muted small">A <strong>layout preview</strong> with generated placeholder pictures: your server supplies the real backgrounds, and playing is switched off.
+    {% endif %}
     Use the mouse, or <button type="button" id="preview-focus" class="linkish">click here</button> and then the arrow keys, Enter and Escape.</p>
     <p class="controls">
       <span class="label">Preview</span>
@@ -39,13 +43,22 @@ permalink: "menus/{{ e.menuId }}/index.html"
       {% for s in e.screens %}<button type="button" data-screen="{{ s.key }}">{{ s.title }}</button>{% endfor %}
     </p>
     {% if "tmdb" in e.backgrounds %}
-    <p class="small muted">This menu's background is <strong>the film's own TMDB backdrop</strong>, fetched by the viewer's browser from TMDB (the catalogue hosts no pictures). The preview starts with placeholder art; tick <em>Show the real TMDB backdrop</em> on the preview to load it. That asks image.tmdb.org for the picture, which can then see your address.</p>
+    <p class="small muted">This menu's background is <strong>the film's own TMDB backdrop</strong>, fetched by the viewer's browser from TMDB (the catalogue doesn't host it). The preview starts with placeholder art; tick <em>Show the real TMDB backdrop</em> on the preview to load it. That asks image.tmdb.org for the picture, which can then see your address.</p>
     {% endif %}
     <p id="preview-status" class="muted small" aria-live="polite"></p>
   </section>
   <script src="{{ '/assets/harness-core.js' | url }}"></script>
   <script src="{{ '/assets/vendor/menu-to-renderable.js' | url }}"></script>
   <script src="{{ '/assets/menu-preview.js' | url }}"></script>
+
+  {% if e.hostedArt.length %}
+  <aside class="notice">
+    <h2>Art included</h2>
+    <p>This menu's pictures and sounds ({{ e.hostedArt.length }} files) are hosted with the catalogue, so it works as soon as
+    you install it: there is nothing else to download. The menu itself is CC0, but the art keeps its own licence;
+    see <a href="{{ ('/v1/art/' + e.menuId + '/CREDITS.txt') | url }}">CREDITS.txt</a>.</p>
+  </aside>
+  {% endif %}
 
   {% if e.needsLocalArt.length %}
   <aside class="notice">
@@ -70,7 +83,7 @@ permalink: "menus/{{ e.menuId }}/index.html"
       <h2>Details</h2>
       <dl class="facts">
         <dt>Author</dt><dd>{% if e.author.github %}<a href="{{ ('https://github.com/' + e.author.github) }}">{{ e.author.name }}</a>{% else %}{{ e.author.name }}{% endif %}</dd>
-        <dt>Licence</dt><dd>CC0 1.0 (public domain)</dd>
+        <dt>Licence</dt><dd>CC0 1.0 (public domain){% if e.hostedArt.length %}; the hosted art is licensed separately (<a href="{{ ('/v1/art/' + e.menuId + '/CREDITS.txt') | url }}">credits</a>){% endif %}</dd>
         <dt>Revision</dt><dd>{{ e.revision }}</dd>
         <dt>Needs plugin</dt><dd>{{ e.minPluginVersion }} or later</dd>
         {% if e.language %}<dt>Language</dt><dd>{{ e.language }}</dd>{% endif %}

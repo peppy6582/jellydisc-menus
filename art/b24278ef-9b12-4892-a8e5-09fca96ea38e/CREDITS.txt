@@ -1,0 +1,22 @@
+Art for the Big Buck Bunny special-edition menu (b24278ef-9b12-4892-a8e5-09fca96ea38e)
+
+Big Buck Bunny (2008) is (c) copyright Blender Foundation, www.bigbuckbunny.org,
+licensed under Creative Commons Attribution 3.0 (CC BY 3.0):
+https://creativecommons.org/licenses/by/3.0/
+
+Every file in this folder is taken or adapted from the film and its 2008 DVD,
+so the same licence and credit apply to them.
+
+bg-meadow.jpg, bg-forest.jpg, bg-rodents.jpg, poster-bow.jpg
+    Stills from the film, as posted to fanart.tv (movie 10378). Re-encoded.
+logo.png, clearart-squirrel.png
+    The film's title logo and a character cut-out, as posted to fanart.tv.
+bg-storyboard.jpg, bg-elements.jpg
+    Frames from the DVD's storyboard reel and scene-elements featurette.
+tile-*.jpg
+    Section buttons: frames from the DVD extras with a caption added.
+theme.m4a
+    75 seconds of the film's opening music (score by Jan Morgenstern),
+    with a fade in and out.
+
+Changes: cropped, scaled, captioned, re-encoded and faded as described above.

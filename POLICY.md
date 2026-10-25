@@ -4,9 +4,14 @@
 
 ## What the catalogue contains
 
-Menu layouts and structure as JSON, plus a short description of each. It contains **no artwork, music or video** and no
-copies of anything belonging to a studio or distributor. Every menu is dedicated to the public domain
+Menu layouts and structure as JSON, plus a short description of each. It contains **no studio artwork, music or video**
+and no copies of anything belonging to a studio or distributor. Every menu is dedicated to the public domain
 ([CC0 1.0](menus/LICENSE)) by whoever submitted it.
+
+A few menus link to **openly licensed art** (for example stills and music from a film released under CC BY) that the
+catalogue hosts in `art/<menuId>/`. That art is *not* CC0: it keeps its own licence, which the `CREDITS.txt` beside it
+states along with the credit and what was changed. It is served from this site like the menus, so no third party sees
+who views it.
 
 ## Takedowns
 
