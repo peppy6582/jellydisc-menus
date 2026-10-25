@@ -11,6 +11,7 @@ const FORMATS = { DVD: "DVD", BluRay: "Blu-ray", UHD: "4K UHD", Digital: "Digita
 // What a menu uses, in words a visitor understands. Order is the order badges are shown in; "art" is the one that needs attention.
 const FEATURES = [
   ["asset-art", "Bring your own art", "art"],
+  ["hosted-art", "Art included", "feature"],
   ["trailer", "Trailer background", "feature"],
   ["chapters", "Scene selection", "feature"],
   ["flow", "Paged grid", "feature"],
@@ -57,6 +58,7 @@ export default function () {
       discLine: [format, release.edition && release.edition !== "Example" ? release.edition : "", release.year || ""].filter(Boolean).join(" · "),
       backgrounds: e.backgrounds || [],
       needsLocalArt: e.needsLocalArt || [],
+      hostedArt: e.hostedArt || [],
       features: e.features || [],
       kind,
       raw,

@@ -14,12 +14,15 @@ ROOT = os.path.abspath(os.path.join(HERE, ".."))
 sys.path.insert(0, HERE)
 PLUGIN = os.environ.get("PLUGIN_DIR") or os.path.join(ROOT, "..", "jellyfin-disc-menus")
 
-from catalogue_check import check_catalogue  # noqa: E402
+from catalogue_check import check_catalogue, ART_URL  # noqa: E402
 import build_index  # noqa: E402
 
 INCEPTION = "0b311cdd-e7c2-4e27-b4bc-fb1e5acebfc8"
 INCEPTION_DIR = "menus/movie/27205"
 DARK_KNIGHT = "3be8f617-e13f-4e71-9da1-3c43bd3fc319"
+BBB = "b24278ef-9b12-4892-a8e5-09fca96ea38e"      # links to art the catalogue hosts
+BBB_DIR = "menus/movie/10378"
+PNG = b"\x89PNG\r\n\x1a\n" + b"\0" * 24
 
 
 class Catalogue(unittest.TestCase):
@@ -29,7 +32,7 @@ class Catalogue(unittest.TestCase):
         self.tmp = tempfile.mkdtemp(prefix="cat-test-")
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.root = os.path.join(self.tmp, "cat")
-        for part in ("schema", "config", "menus"):
+        for part in ("schema", "config", "menus", "art"):
             shutil.copytree(os.path.join(ROOT, part), os.path.join(self.root, part))
 
     # ---- helpers
@@ -85,7 +88,7 @@ class Catalogue(unittest.TestCase):
     def test_seeds_pass(self):
         problems, entries = self.check()
         self.assertEqual([], [p for p in problems if p.severity == "error"])
-        self.assertEqual(5, len(entries))
+        self.assertEqual(6, len(entries))
 
     # ---- files
     def test_invalid_json(self):
@@ -245,6 +248,117 @@ class Catalogue(unittest.TestCase):
         self.assertIn(f"asset:{DARK_KNIGHT}/background.webp", dk.needs_art)
         self.assertIn("asset-art", dk.features)
 
+    # ---- hosted art
+    def art(self, name="", mid=BBB):
+        return self.path(f"art/{mid}/{name}" if name else f"art/{mid}")
+
+    def write_art(self, name, data, mid=BBB):
+        os.makedirs(self.art(mid=mid), exist_ok=True)
+        with open(self.art(name, mid), "wb") as f:
+            f.write(data)
+
+    def set_bbb_logo(self, value):
+        def edit(d):
+            d["menus"]["main"]["layout"]["layers"][0]["image"] = value
+        self.edit_menu(edit, BBB, BBB_DIR)
+
+    def test_hosted_art_link_passes_and_is_listed(self):
+        problems, entries = self.check()
+        self.assertEqual([], [p for p in problems if p.severity == "error"])
+        bbb = next(e for e in entries if e.menu["menuId"] == BBB)
+        self.assertIn("logo.png", bbb.hosted_art)
+        self.assertIn("theme.m4a", bbb.hosted_art)
+        self.assertIn("hosted-art", bbb.features)
+        self.assertEqual([], bbb.needs_art)
+
+    def test_hosted_art_of_another_menu_rejected(self):
+        def bad(d):
+            self.first_entry(d)["image"] = f"{ART_URL}{BBB}/logo.png"
+        self.edit_menu(bad)
+        self.assertFails("external image and audio links")
+
+    def test_hosted_art_must_exist(self):
+        self.set_bbb_logo(f"{ART_URL}{BBB}/missing.png")
+        self.assertFails("which is not in the catalogue")
+
+    def test_hosted_art_lookalikes_rejected(self):
+        for v in [
+            f"https://peppy6582.github.io.evil.example/jellydisc-menus/v1/art/{BBB}/logo.png",
+            f"http://peppy6582.github.io/jellydisc-menus/v1/art/{BBB}/logo.png",
+            f"https://peppy6582.github.io/jellydisc-menus/v1/art/{BBB}/../{BBB}/logo.png",
+            f"{ART_URL}{BBB}/logo.png?x=1",
+            f"{ART_URL}{BBB}/LOGO.png",
+            f"{ART_URL}{BBB}/CREDITS.txt",
+            f"{ART_URL}{BBB}//logo.png",
+            f"{ART_URL}{BBB.upper()}/logo.png",
+        ]:
+            with self.subTest(v=v):
+                self.set_bbb_logo(v)
+                self.assertTrue(self.errors(), v)
+
+    def test_hosted_art_kind_must_fit(self):
+        self.set_bbb_logo(f"{ART_URL}{BBB}/theme.m4a")
+        self.assertFails("is not a picture")
+
+        def music(d):
+            d["audio"]["music"]["file"] = f"{ART_URL}{BBB}/logo.png"
+        self.set_bbb_logo(f"{ART_URL}{BBB}/logo.png")
+        self.edit_menu(music, BBB, BBB_DIR)
+        self.assertFails("is not a sound")
+
+    def test_hosted_art_needs_art_sources(self):
+        self.edit_listing(lambda d: d.update(artSources="none"), BBB, BBB_DIR)
+        self.assertFails("artSources must say where they come from")
+
+    def test_art_folder_needs_credits(self):
+        os.remove(self.art("CREDITS.txt"))
+        self.assertFails("missing CREDITS.txt")
+
+    def test_credits_must_be_plain_text(self):
+        self.write_art("CREDITS.txt", b"\xff\xfe not utf-8")
+        self.assertFails("plain UTF-8 text")
+
+    def test_art_folder_must_belong_to_a_menu(self):
+        other = "11111111-2222-4333-8444-555555555555"
+        self.write_art("CREDITS.txt", b"x", other)
+        self.assertFails("no menu in the catalogue has this menuId")
+
+    def test_art_folder_names(self):
+        os.makedirs(self.path("art/not-a-menu-id"))
+        self.assertFails("one folder per menu")
+
+    def test_art_file_must_be_what_it_says(self):
+        self.write_art("fake.png", b"<svg onload=alert(1)>")
+        self.assertFails("is not really a png")
+
+    def test_art_types_are_limited(self):
+        self.write_art("x.svg", b"<svg/>")
+        self.assertFails("only pictures")
+        os.remove(self.art("x.svg"))
+        self.write_art("Upper.png", PNG)
+        self.assertFails("lower-case")
+
+    def test_art_file_size_limit(self):
+        self.write_art("big.jpg", b"\xff\xd8\xff" + b"\0" * (2 * 1024 * 1024))
+        self.assertFails("the limit is")
+
+    def test_art_folder_size_limit(self):
+        for i in range(5):
+            self.write_art(f"pad{i}.jpg", b"\xff\xd8\xff" + b"\0" * (2 * 1024 * 1024 - 64))
+        self.assertFails("per menu")
+
+    def test_art_no_subfolders_or_links(self):
+        os.makedirs(self.art("sub"))
+        self.assertFails("files only")
+        os.rmdir(self.art("sub"))
+        os.symlink("/etc/passwd", self.art("passwd.png"))
+        self.assertFails("symbolic links")
+
+    def test_unused_art_warns(self):
+        self.write_art("spare.png", PNG)
+        self.assertEqual([], self.errors())
+        self.assertTrue(any("no menu links" in w.message for w in self.warnings()))
+
     def test_inline_image_size_limit(self):
         def bad(d):
             self.first_entry(d)["image"] = "data:image/png;base64," + "A" * 17000
@@ -355,7 +469,7 @@ class Index(unittest.TestCase):
             schema = json.load(f)
         errs = list(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(index))
         self.assertEqual([], [e.message for e in errs])
-        self.assertEqual(5, len(index["entries"]))
+        self.assertEqual(6, len(index["entries"]))
 
     def test_files_match_their_hashes(self):
         out = os.path.join(self.tmp, "out")
@@ -365,6 +479,18 @@ class Index(unittest.TestCase):
                 raw = f.read()
             self.assertEqual(e["sha256"], hashlib.sha256(raw).hexdigest())
             self.assertEqual(e["size"], len(raw))
+
+    def test_hosted_art_is_published_with_its_credits(self):
+        out = os.path.join(self.tmp, "out")
+        index = self.build(out=out)
+        bbb = next(e for e in index["entries"] if e["menuId"] == BBB)
+        self.assertIn("logo.png", bbb["hostedArt"])
+        for name in bbb["hostedArt"] + ["CREDITS.txt"]:
+            with open(os.path.join(ROOT, "art", BBB, name), "rb") as a, open(os.path.join(out, "v1", "art", BBB, name), "rb") as b:
+                self.assertEqual(a.read(), b.read(), name)
+        others = [e for e in index["entries"] if e["menuId"] != BBB]
+        self.assertTrue(all(e["hostedArt"] == [] for e in others))
+        self.assertEqual([BBB], os.listdir(os.path.join(out, "v1", "art")))
 
     def test_output_is_reproducible(self):
         a, b = os.path.join(self.tmp, "a"), os.path.join(self.tmp, "b")
@@ -380,7 +506,7 @@ class Index(unittest.TestCase):
 
     def test_refuses_to_build_a_broken_catalogue(self):
         root = os.path.join(self.tmp, "cat")
-        for part in ("schema", "config", "menus"):
+        for part in ("schema", "config", "menus", "art"):
             shutil.copytree(os.path.join(ROOT, part), os.path.join(root, part))
         with open(os.path.join(root, self.menu_path()), "w") as f:
             f.write("nope")

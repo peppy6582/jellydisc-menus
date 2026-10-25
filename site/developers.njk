@@ -13,7 +13,7 @@ Within format version 1 fields are only ever added, so ignore fields you don't k
 <ul>
   <li><code>entries[].match</code> is the menu's own <code>match</code> block: item type and provider ids to compare with your library.</li>
   <li><code>entries[].url</code> is relative to <code>baseUrl</code>. A revision's file never changes and never disappears. Check <code>sha256</code> before you install it.</li>
-  <li><code>minPluginVersion</code> and <code>features</code> say what a client must support. <code>needsLocalArt</code> lists files the user must supply.</li>
+  <li><code>minPluginVersion</code> and <code>features</code> say what a client must support. <code>needsLocalArt</code> lists files the user must supply. <code>hostedArt</code> lists openly licensed files the menu links to at <code>v1/art/&lt;menuId&gt;/</code> (with their <code>CREDITS.txt</code>); nothing to install for those.</li>
   <li><code>withdrawn</code> lists menus that were removed, so you can tell a user who installed one.</li>
 </ul>
 

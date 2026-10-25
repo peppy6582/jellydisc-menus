@@ -4,7 +4,7 @@ A shared, public-domain collection of **DVD and Blu-ray style menus** for the
 [Disc Menus plugin for Jellyfin](https://github.com/peppy6582/jellydisc). Each menu is a small JSON file filed under
 the film or series it is for. The plugin matches it to the right title in your library by its TMDB / IMDb / TVDB id.
 
-> **Status: early.** Five demonstration menus so far, and a static website (Eleventy + Pagefind) that GitHub Pages publishes from `main`. Community project; not affiliated
+> **Status: early.** Five demonstration menus and one full special edition (Big Buck Bunny, with its open-licence art included) so far, and a static website (Eleventy + Pagefind) that GitHub Pages publishes from `main`. Community project; not affiliated
 > with Jellyfin or TMDB.
 
 > **Heads up: this project is vibe coded.** The tools, site and workflows in this repository was written by an AI (Claude, through Claude Code) while
@@ -19,13 +19,17 @@ the film or series it is for. The plugin matches it to the right title in your l
 ```
 menus/<movie|tv>/<TMDB id>/<menuId>.menu.json      the menu (what the plugin loads)
 menus/<movie|tv>/<TMDB id>/<menuId>.listing.json   how it is described in the catalogue: title, tags, changelog
+art/<menuId>/                                      openly licensed art a menu links to, with its CREDITS.txt (rare)
 schema/                                            the listing and index schemas (the menu schema is the plugin's)
 config/                                            hosts allowed, withdrawn menus, which plugin version added which feature
 tools/                                             the checker, the index builder, and their tests
 ```
 
-**The catalogue holds menu JSON only.** No artwork, music or video, ever. A menu that points at its own art files
-(`asset:<menuId>/...`) is labelled "bring your own art" and its listing says where to get the files.
+**The catalogue holds menu JSON, and no studio artwork, music or video.** A menu that points at its own art files
+(`asset:<menuId>/...`) is labelled "bring your own art" and its listing says where to get the files. The one exception is
+**openly licensed art** (for example from a CC BY film), which can be hosted in `art/<menuId>/` with its `CREDITS.txt`
+and linked from the menu, so it works with nothing to install; those menus are labelled "art included". See
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Use a menu
 

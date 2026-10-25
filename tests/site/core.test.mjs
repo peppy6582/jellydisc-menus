@@ -121,3 +121,56 @@ test("hash is stable and unsigned", () => {
   assert.notEqual(C.hash("a"), C.hash("b"));
   for (const s of ["", "x", "menu/Menus/main/Background", "ü".repeat(50)]) assert.ok(C.hash(s) >= 0);
 });
+
+const ART_URL = "https://peppy6582.github.io/jellydisc-menus/v1/art/";
+
+test("art the catalogue hosts is shown for real, through the site's own art folder", () => {
+  const doc = {
+    Background: { Source: "image", Image: `${ART_URL}${ID}/bg.jpg`, Dim: 0.3 },
+    Layout: { Layers: [{ Image: `${ART_URL}${ID}/logo.png` }] },
+    Audio: { Music: { Source: "file", File: `${ART_URL}${ID}/theme.m4a` } },
+    Menus: {
+      t: { Background: { Source: "trailer", Poster: `${ART_URL}${ID}/poster.jpg`, Dim: 0.6 } },
+      u: { Background: { Source: "trailer" } },
+      m: { Entries: [{ Image: `${ART_URL}${ID}/tile.jpg`, ImageFocus: `${ART_URL}${ID}/tile-focus.jpg` }] },
+    },
+  };
+  const out = C.placeholderize(doc, ART);
+  assert.equal(JSON.stringify(out.Background), JSON.stringify({ Source: "image", Image: `asset:hosted/${ID}/bg.jpg`, Dim: 0.3 }));
+  assert.equal(out.Layout.Layers[0].Image, `asset:hosted/${ID}/logo.png`);
+  assert.equal(out.Audio.Music.File, `asset:hosted/${ID}/theme.m4a`);
+  assert.equal(JSON.stringify(out.Menus.t.Background), JSON.stringify({ Source: "image", Image: `asset:hosted/${ID}/poster.jpg`, Dim: 0.6 }));
+  assert.match(out.Menus.u.Background.Image, /^data:image\/png/);
+  assert.equal(out.Menus.m.Entries[0].Image, `asset:hosted/${ID}/tile.jpg`);
+  assert.equal(out.Menus.m.Entries[0].ImageFocus, `asset:hosted/${ID}/tile-focus.jpg`);
+  assert.ok(!/https?:/i.test(JSON.stringify(out)));
+});
+
+test("only an exact link to hosted art counts; lookalikes become placeholders or silence", () => {
+  for (const bad of [
+    `https://peppy6582.github.io.evil.example/jellydisc-menus/v1/art/${ID}/logo.png`,
+    `http://peppy6582.github.io/jellydisc-menus/v1/art/${ID}/logo.png`,
+    `${ART_URL}${ID}/../../../evil.png`, `${ART_URL}${ID}/a/b.png`, `${ART_URL}${ID}/logo.png?x=1`,
+    `${ART_URL}${ID}/LOGO.png`, `${ART_URL}not-an-id/logo.png`, `${ART_URL}${ID}/`, `${ART_URL}${ID}/..png`,
+    `${ART_URL.toUpperCase()}${ID}/logo.png`, `x${ART_URL}${ID}/logo.png`, `${ART_URL}${ID}/logo.png\n`,
+  ]) {
+    assert.equal(C.hostedArt(bad), null, bad);
+    const out = C.placeholderize({ Layout: { Layers: [{ Image: bad }] }, Audio: { Music: { File: bad } } }, ART);
+    assert.match(out.Layout.Layers[0].Image, /^data:image\/png/, bad);
+    assert.ok(!/asset:hosted/.test(JSON.stringify(out)), bad);
+  }
+  for (const v of [null, undefined, 5, {}, []]) assert.equal(C.hostedArt(v), null);
+});
+
+test("the stand-in ApiClient serves hosted art from the site and nothing else", () => {
+  const silence = C.silentWav();
+  const api = C.fakeApiClient(silence, "/jellydisc-menus/v1/art/");
+  assert.equal(api.getUrl(`DiscMenus/Assets/hosted/${ID}/logo.png`), `/jellydisc-menus/v1/art/${ID}/logo.png`);
+  assert.equal(api.getUrl(`DiscMenus/Assets/hosted/${ID}/theme.m4a`), `/jellydisc-menus/v1/art/${ID}/theme.m4a`);
+  for (const bad of [
+    `DiscMenus/Assets/hosted/${ID}/..%2F..%2Fx.png`, `DiscMenus/Assets/hosted/${ID}/a/b.png`, `DiscMenus/Assets/hosted/x/logo.png`,
+    `DiscMenus/Assets/hosted/${ID}/..png`, `xDiscMenus/Assets/hosted/${ID}/logo.png`,
+  ]) assert.equal(api.getUrl(bad), bad.endsWith(".png") || bad.endsWith("x.png") ? "" : silence, bad);
+  // without an art folder (any other page), hosted art resolves to nothing
+  assert.equal(C.fakeApiClient(silence).getUrl(`DiscMenus/Assets/hosted/${ID}/logo.png`), "");
+});

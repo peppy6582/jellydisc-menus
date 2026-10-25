@@ -34,7 +34,7 @@ class Submission(unittest.TestCase):
         self.tmp = tempfile.mkdtemp(prefix="sub-test-")
         self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
         self.root = os.path.join(self.tmp, "cat")
-        for part in ("schema", "config", "menus"):
+        for part in ("schema", "config", "menus", "art"):
             shutil.copytree(os.path.join(ROOT, part), os.path.join(self.root, part))
         with open(os.path.join(self.root, "menus/movie/27205", f"{INCEPTION}.menu.json"), encoding="utf-8") as f:
             self.base = json.load(f)
@@ -75,7 +75,7 @@ class Submission(unittest.TestCase):
         from catalogue_check import check_catalogue
         problems, entries = check_catalogue(self.root, PLUGIN)
         self.assertEqual([], [p for p in problems if p.severity == "error"])
-        self.assertEqual(6, len(entries))
+        self.assertEqual(7, len(entries))
 
     def test_unfenced_json_and_chosen_name(self):
         r = self.run_form(form(json.dumps(self.base), fence=False, name="Pat Example"))

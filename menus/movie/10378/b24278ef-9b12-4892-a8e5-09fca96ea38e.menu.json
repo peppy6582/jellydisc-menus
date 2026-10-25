@@ -1,0 +1,929 @@
+{
+  "schemaVersion": 1,
+  "menuId": "b24278ef-9b12-4892-a8e5-09fca96ea38e",
+  "revision": 6,
+  "meta": {
+    "author": "peppy6582",
+    "created": "2026-10-25T22:00:42Z",
+    "language": "en-US",
+    "notes": "Special edition for Big Buck Bunny (2008, CC BY 3.0 Blender Foundation) with the extras from the official 2008 DVD. All art and music is linked from the catalogue (see its CREDITS.txt), so there is nothing to install."
+  },
+  "match": {
+    "itemType": "Movie",
+    "providerIds": {
+      "Imdb": "tt1254207",
+      "Tmdb": "10378"
+    },
+    "release": {
+      "format": "UHD",
+      "year": 2008
+    }
+  },
+  "background": {
+    "source": "image",
+    "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/bg-meadow.jpg",
+    "dim": 0.12
+  },
+  "theme": {
+    "id": "cinema",
+    "accent": "#2fc3ff",
+    "align": "center",
+    "textColor": "#ffffff",
+    "font": "wide",
+    "fontSize": 2.3,
+    "uppercase": true,
+    "bold": true,
+    "letterSpacing": 0.07
+  },
+  "extras": {
+    "a-tour-of-the-blender-institute": {
+      "type": "BehindTheScenes",
+      "durationSec": 732.8
+    },
+    "animating-with-william": {
+      "type": "BehindTheScenes",
+      "durationSec": 82.8
+    },
+    "funny-furry-the-making-of-big-buck-bunny": {
+      "type": "BehindTheScenes",
+      "durationSec": 1306.4
+    },
+    "peach-day": {
+      "type": "BehindTheScenes",
+      "durationSec": 39.9
+    },
+    "production-diary-1": {
+      "type": "BehindTheScenes",
+      "durationSec": 947.8
+    },
+    "production-diary-2": {
+      "type": "BehindTheScenes",
+      "durationSec": 1537.4
+    },
+    "production-diary-3": {
+      "type": "BehindTheScenes",
+      "durationSec": 808.8
+    },
+    "production-diary-4-january": {
+      "type": "BehindTheScenes",
+      "durationSec": 554.6
+    },
+    "studio-quick-tour-october-2007": {
+      "type": "BehindTheScenes",
+      "durationSec": 64.9
+    },
+    "deleted-scenes": {
+      "type": "DeletedScene",
+      "durationSec": 796.5
+    },
+    "commentary-edition": {
+      "type": "Featurette",
+      "durationSec": 596.5
+    },
+    "compositing-breakdown": {
+      "type": "Featurette",
+      "durationSec": 16,
+      "toleranceSec": 0.5
+    },
+    "concept-art-gallery": {
+      "type": "Featurette",
+      "durationSec": 312
+    },
+    "from-animatic-to-final-four-way-comparison": {
+      "type": "Featurette",
+      "durationSec": 596.5
+    },
+    "render-farm-monitor": {
+      "type": "Featurette",
+      "durationSec": 18,
+      "toleranceSec": 0.5
+    },
+    "render-passes": {
+      "type": "Featurette",
+      "durationSec": 109.2
+    },
+    "scene-elements": {
+      "type": "Featurette",
+      "durationSec": 45.8
+    },
+    "storyboard-reel": {
+      "type": "Featurette",
+      "durationSec": 586.6
+    },
+    "the-animatic-october-2007": {
+      "type": "Featurette",
+      "durationSec": 437.8
+    },
+    "enrico-in-the-forest": {
+      "type": "Interview",
+      "durationSec": 277
+    },
+    "enrico-on-the-environments": {
+      "type": "Interview",
+      "durationSec": 391.1
+    },
+    "india-interview": {
+      "type": "Interview",
+      "durationSec": 694.4
+    },
+    "nathan-rigging-the-chinchilla": {
+      "type": "Interview",
+      "durationSec": 182.6
+    },
+    "nathan-s-rabbit-demo": {
+      "type": "Interview",
+      "durationSec": 283.8,
+      "toleranceSec": 0.5
+    },
+    "sacha-goedegebure-director": {
+      "type": "Interview",
+      "durationSec": 403.7
+    },
+    "sacha-modelling": {
+      "type": "Interview",
+      "durationSec": 156.5
+    },
+    "sacha-on-the-animatic": {
+      "type": "Interview",
+      "durationSec": 217.1
+    },
+    "william-animating": {
+      "type": "Interview",
+      "durationSec": 285,
+      "toleranceSec": 0.5
+    },
+    "animation-tests": {
+      "type": "Clip",
+      "durationSec": 60.2
+    },
+    "gag-reel": {
+      "type": "Clip",
+      "durationSec": 31
+    },
+    "render-tests": {
+      "type": "Clip",
+      "durationSec": 108.9
+    },
+    "official-trailer": {
+      "type": "Trailer",
+      "durationSec": 33
+    }
+  },
+  "root": "main",
+  "menus": {
+    "main": {
+      "title": "Big Buck Bunny",
+      "layout": {
+        "hideTitle": true,
+        "layers": [
+          {
+            "type": "image",
+            "position": {
+              "x": 95,
+              "y": 6,
+              "w": 42,
+              "anchor": "top-right"
+            },
+            "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/logo.png",
+            "fit": "contain",
+            "opacity": 1
+          },
+          {
+            "type": "panel",
+            "position": {
+              "x": 50,
+              "y": 95,
+              "w": 92,
+              "h": 15,
+              "anchor": "bottom"
+            },
+            "fill": "#04131f",
+            "opacity": 0.6,
+            "borderColor": "#2fc3ff",
+            "borderWidth": 0.25,
+            "radius": 1.2
+          }
+        ]
+      },
+      "entries": [
+        {
+          "action": "playFeature",
+          "label": "Play Movie",
+          "position": {
+            "x": 17,
+            "y": 87.5,
+            "w": 22,
+            "anchor": "center"
+          }
+        },
+        {
+          "action": "playExtra",
+          "label": "Commentaries",
+          "extra": "commentary-edition",
+          "position": {
+            "x": 39,
+            "y": 87.5,
+            "w": 22,
+            "anchor": "center"
+          }
+        },
+        {
+          "action": "submenu",
+          "label": "Special Features",
+          "menu": "features",
+          "position": {
+            "x": 62,
+            "y": 87.5,
+            "w": 26,
+            "anchor": "center"
+          }
+        },
+        {
+          "action": "playExtra",
+          "label": "Trailer",
+          "extra": "official-trailer",
+          "position": {
+            "x": 84,
+            "y": 87.5,
+            "w": 18,
+            "anchor": "center"
+          }
+        }
+      ]
+    },
+    "features": {
+      "title": "Special Features",
+      "background": {
+        "source": "trailer",
+        "trailerIndex": 0,
+        "muted": true,
+        "dim": 0.6,
+        "poster": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/poster-bow.jpg"
+      },
+      "layout": {
+        "titlePosition": {
+          "x": 4,
+          "y": 7,
+          "w": 50,
+          "anchor": "left"
+        },
+        "layers": [],
+        "flow": {
+          "region": {
+            "x": 50,
+            "y": 58,
+            "w": 92,
+            "h": 72,
+            "anchor": "center"
+          },
+          "columns": 4,
+          "rows": 3
+        }
+      },
+      "theme": {
+        "id": "cinema",
+        "accent": "#2fc3ff",
+        "align": "left",
+        "textColor": "#ffffff",
+        "font": "wide",
+        "fontSize": 2.8,
+        "uppercase": true,
+        "bold": true,
+        "letterSpacing": 0.07
+      },
+      "entries": [
+        {
+          "action": "submenu",
+          "menu": "making",
+          "label": "The Making Of",
+          "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-making.jpg",
+          "imageFocus": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-making-focus.jpg"
+        },
+        {
+          "action": "submenu",
+          "menu": "team",
+          "label": "Meet the Team",
+          "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-team.jpg",
+          "imageFocus": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-team-focus.jpg"
+        },
+        {
+          "action": "submenu",
+          "menu": "story",
+          "label": "Storyboard to Screen",
+          "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-story.jpg",
+          "imageFocus": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-story-focus.jpg"
+        },
+        {
+          "action": "submenu",
+          "menu": "vfx",
+          "label": "Visual Effects",
+          "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-vfx.jpg",
+          "imageFocus": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-vfx-focus.jpg"
+        },
+        {
+          "action": "submenu",
+          "menu": "tests",
+          "label": "Tests & Bloopers",
+          "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-tests.jpg",
+          "imageFocus": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-tests-focus.jpg"
+        },
+        {
+          "action": "playExtra",
+          "extra": "deleted-scenes",
+          "label": "Deleted Scenes",
+          "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-deleted.jpg",
+          "imageFocus": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-deleted-focus.jpg"
+        },
+        {
+          "action": "playExtra",
+          "extra": "concept-art-gallery",
+          "label": "Concept Art",
+          "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-concept.jpg",
+          "imageFocus": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-concept-focus.jpg"
+        },
+        {
+          "action": "playExtra",
+          "extra": "official-trailer",
+          "label": "Theatrical Trailer",
+          "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-trailer.jpg",
+          "imageFocus": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/tile-trailer-focus.jpg"
+        },
+        {
+          "action": "home",
+          "label": "Main Menu"
+        }
+      ]
+    },
+    "making": {
+      "title": "The Making Of",
+      "background": {
+        "source": "image",
+        "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/bg-rodents.jpg",
+        "dim": 0.55
+      },
+      "layout": {
+        "layers": [
+          {
+            "type": "panel",
+            "position": {
+              "x": 50,
+              "y": 58,
+              "w": 74,
+              "h": 64,
+              "anchor": "center"
+            },
+            "fill": "#04131f",
+            "opacity": 0.62,
+            "borderColor": "#2fc3ff",
+            "borderWidth": 0.25,
+            "radius": 1.6
+          },
+          {
+            "type": "image",
+            "position": {
+              "x": 96,
+              "y": 5,
+              "w": 17,
+              "anchor": "top-right"
+            },
+            "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/logo.png",
+            "fit": "contain",
+            "opacity": 0.95
+          }
+        ],
+        "flow": {
+          "region": {
+            "x": 50,
+            "y": 58,
+            "w": 70,
+            "h": 58,
+            "anchor": "center"
+          },
+          "columns": 3,
+          "rows": 4
+        }
+      },
+      "entries": [
+        {
+          "action": "playSequence",
+          "label": "Play All",
+          "extras": [
+            "funny-furry-the-making-of-big-buck-bunny",
+            "production-diary-1",
+            "production-diary-2",
+            "production-diary-3",
+            "production-diary-4-january",
+            "a-tour-of-the-blender-institute",
+            "studio-quick-tour-october-2007",
+            "peach-day",
+            "animating-with-william"
+          ]
+        },
+        {
+          "action": "playExtra",
+          "label": "Funny & Furry: The Making Of",
+          "extra": "funny-furry-the-making-of-big-buck-bunny"
+        },
+        {
+          "action": "playExtra",
+          "label": "Production Diary 1",
+          "extra": "production-diary-1"
+        },
+        {
+          "action": "playExtra",
+          "label": "Production Diary 2",
+          "extra": "production-diary-2"
+        },
+        {
+          "action": "playExtra",
+          "label": "Production Diary 3",
+          "extra": "production-diary-3"
+        },
+        {
+          "action": "playExtra",
+          "label": "Production Diary 4",
+          "extra": "production-diary-4-january"
+        },
+        {
+          "action": "playExtra",
+          "label": "Blender Institute Tour",
+          "extra": "a-tour-of-the-blender-institute"
+        },
+        {
+          "action": "playExtra",
+          "label": "Studio Quick Tour",
+          "extra": "studio-quick-tour-october-2007"
+        },
+        {
+          "action": "playExtra",
+          "label": "Peach Day",
+          "extra": "peach-day"
+        },
+        {
+          "action": "playExtra",
+          "label": "Animating with William",
+          "extra": "animating-with-william"
+        },
+        {
+          "action": "back",
+          "label": "Back"
+        }
+      ]
+    },
+    "team": {
+      "title": "Meet the Team",
+      "background": {
+        "source": "image",
+        "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/bg-forest.jpg",
+        "dim": 0.45
+      },
+      "layout": {
+        "layers": [
+          {
+            "type": "panel",
+            "position": {
+              "x": 96,
+              "y": 58,
+              "w": 56,
+              "h": 64,
+              "anchor": "right"
+            },
+            "fill": "#04131f",
+            "opacity": 0.66,
+            "borderColor": "#2fc3ff",
+            "borderWidth": 0.25,
+            "radius": 1.6
+          },
+          {
+            "type": "image",
+            "position": {
+              "x": 96,
+              "y": 5,
+              "w": 17,
+              "anchor": "top-right"
+            },
+            "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/logo.png",
+            "fit": "contain",
+            "opacity": 0.95
+          }
+        ],
+        "titlePosition": {
+          "x": 68,
+          "y": 16,
+          "w": 56,
+          "anchor": "center"
+        },
+        "flow": {
+          "region": {
+            "x": 68,
+            "y": 58,
+            "w": 52,
+            "h": 58,
+            "anchor": "center"
+          },
+          "columns": 2,
+          "rows": 6
+        }
+      },
+      "entries": [
+        {
+          "action": "playSequence",
+          "label": "Play All",
+          "extras": [
+            "sacha-goedegebure-director",
+            "sacha-modelling",
+            "sacha-on-the-animatic",
+            "enrico-on-the-environments",
+            "enrico-in-the-forest",
+            "nathan-rigging-the-chinchilla",
+            "nathan-s-rabbit-demo",
+            "william-animating",
+            "india-interview"
+          ]
+        },
+        {
+          "action": "playExtra",
+          "label": "Sacha Goedegebure, Director",
+          "extra": "sacha-goedegebure-director"
+        },
+        {
+          "action": "playExtra",
+          "label": "Sacha: Modelling",
+          "extra": "sacha-modelling"
+        },
+        {
+          "action": "playExtra",
+          "label": "Sacha: The Animatic",
+          "extra": "sacha-on-the-animatic"
+        },
+        {
+          "action": "playExtra",
+          "label": "Enrico: Environments",
+          "extra": "enrico-on-the-environments"
+        },
+        {
+          "action": "playExtra",
+          "label": "Enrico in the Forest",
+          "extra": "enrico-in-the-forest"
+        },
+        {
+          "action": "playExtra",
+          "label": "Nathan: Rigging",
+          "extra": "nathan-rigging-the-chinchilla"
+        },
+        {
+          "action": "playExtra",
+          "label": "Nathan: Rabbit Demo",
+          "extra": "nathan-s-rabbit-demo"
+        },
+        {
+          "action": "playExtra",
+          "label": "William: Animating",
+          "extra": "william-animating"
+        },
+        {
+          "action": "playExtra",
+          "label": "India",
+          "extra": "india-interview"
+        },
+        {
+          "action": "back",
+          "label": "Back"
+        }
+      ]
+    },
+    "story": {
+      "title": "Storyboard to Screen",
+      "background": {
+        "source": "color",
+        "color": "#f4efe2"
+      },
+      "theme": {
+        "id": "cinema",
+        "accent": "#0a7fc2",
+        "align": "center",
+        "textColor": "#1f1b16",
+        "font": "condensed",
+        "fontSize": 3.0,
+        "uppercase": false,
+        "bold": true,
+        "letterSpacing": 0.02
+      },
+      "layout": {
+        "buttonStyle": "arrow",
+        "transition": {
+          "style": "wipe",
+          "durationMs": 450
+        },
+        "layers": [
+          {
+            "type": "image",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "w": 100,
+              "h": 100
+            },
+            "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/bg-storyboard.jpg",
+            "fit": "cover",
+            "opacity": 0.22
+          },
+          {
+            "type": "panel",
+            "position": {
+              "x": 50,
+              "y": 60,
+              "w": 56,
+              "h": 48,
+              "anchor": "center"
+            },
+            "fill": "#ffffff",
+            "opacity": 0.78,
+            "borderColor": "#1f1b16",
+            "borderWidth": 0.2,
+            "radius": 0.4
+          }
+        ],
+        "flow": {
+          "region": {
+            "x": 50,
+            "y": 60,
+            "w": 48,
+            "h": 44,
+            "anchor": "center"
+          },
+          "columns": 1,
+          "rows": 5
+        }
+      },
+      "entries": [
+        {
+          "action": "playSequence",
+          "label": "Play All",
+          "extras": [
+            "storyboard-reel",
+            "the-animatic-october-2007",
+            "from-animatic-to-final-four-way-comparison"
+          ]
+        },
+        {
+          "action": "playExtra",
+          "label": "The Storyboard Reel",
+          "extra": "storyboard-reel"
+        },
+        {
+          "action": "playExtra",
+          "label": "The Animatic",
+          "extra": "the-animatic-october-2007"
+        },
+        {
+          "action": "playExtra",
+          "label": "Four-Way Comparison",
+          "extra": "from-animatic-to-final-four-way-comparison"
+        },
+        {
+          "action": "back",
+          "label": "Back"
+        }
+      ]
+    },
+    "vfx": {
+      "title": "Visual Effects",
+      "background": {
+        "source": "color",
+        "color": "#070b10"
+      },
+      "theme": {
+        "id": "cinema",
+        "accent": "#7cff6b",
+        "align": "center",
+        "textColor": "#d9f7ff",
+        "font": "mono",
+        "fontSize": 2.4,
+        "uppercase": true,
+        "bold": true,
+        "letterSpacing": 0.04
+      },
+      "layout": {
+        "buttonStyle": "frame",
+        "transition": {
+          "style": "fade",
+          "durationMs": 350
+        },
+        "layers": [
+          {
+            "type": "image",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "w": 100,
+              "h": 100
+            },
+            "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/bg-elements.jpg",
+            "fit": "cover",
+            "opacity": 0.12
+          },
+          {
+            "type": "panel",
+            "position": {
+              "x": 50,
+              "y": 60,
+              "w": 60,
+              "h": 50,
+              "anchor": "center"
+            },
+            "fill": "#000000",
+            "opacity": 0.7,
+            "borderColor": "#7cff6b",
+            "borderWidth": 0.2,
+            "radius": 0.3
+          },
+          {
+            "type": "image",
+            "position": {
+              "x": 96,
+              "y": 5,
+              "w": 17,
+              "anchor": "top-right"
+            },
+            "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/logo.png",
+            "fit": "contain",
+            "opacity": 0.95
+          }
+        ],
+        "flow": {
+          "region": {
+            "x": 50,
+            "y": 60,
+            "w": 54,
+            "h": 44,
+            "anchor": "center"
+          },
+          "columns": 2,
+          "rows": 3
+        }
+      },
+      "entries": [
+        {
+          "action": "playSequence",
+          "label": "Play All",
+          "extras": [
+            "compositing-breakdown",
+            "scene-elements",
+            "render-passes",
+            "render-farm-monitor"
+          ]
+        },
+        {
+          "action": "playExtra",
+          "label": "Compositing",
+          "extra": "compositing-breakdown"
+        },
+        {
+          "action": "playExtra",
+          "label": "Scene Elements",
+          "extra": "scene-elements"
+        },
+        {
+          "action": "playExtra",
+          "label": "Render Passes",
+          "extra": "render-passes"
+        },
+        {
+          "action": "playExtra",
+          "label": "The Render Farm",
+          "extra": "render-farm-monitor"
+        },
+        {
+          "action": "back",
+          "label": "Back"
+        }
+      ]
+    },
+    "tests": {
+      "title": "Tests & Bloopers",
+      "background": {
+        "source": "color",
+        "color": "#2a1505"
+      },
+      "theme": {
+        "id": "cinema",
+        "accent": "#ff9a1f",
+        "align": "center",
+        "textColor": "#ffffff",
+        "font": "wide",
+        "fontSize": 2.3,
+        "uppercase": true,
+        "bold": true,
+        "letterSpacing": 0.07
+      },
+      "layout": {
+        "transition": {
+          "style": "rise",
+          "durationMs": 420
+        },
+        "layers": [
+          {
+            "type": "panel",
+            "position": {
+              "x": 96,
+              "y": 58,
+              "w": 48,
+              "h": 56,
+              "anchor": "right"
+            },
+            "fill": "#1a0d00",
+            "opacity": 0.62,
+            "borderColor": "#ff9a1f",
+            "borderWidth": 0.25,
+            "radius": 1.6
+          },
+          {
+            "type": "image",
+            "position": {
+              "x": 1,
+              "y": 100,
+              "w": 42,
+              "anchor": "bottom-left"
+            },
+            "image": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/clearart-squirrel.png",
+            "fit": "contain",
+            "opacity": 1
+          }
+        ],
+        "titlePosition": {
+          "x": 72,
+          "y": 13,
+          "w": 50,
+          "anchor": "center"
+        },
+        "flow": {
+          "region": {
+            "x": 72,
+            "y": 58,
+            "w": 42,
+            "h": 48,
+            "anchor": "center"
+          },
+          "columns": 1,
+          "rows": 5
+        }
+      },
+      "entries": [
+        {
+          "action": "playSequence",
+          "label": "Play All",
+          "extras": [
+            "gag-reel",
+            "animation-tests",
+            "render-tests"
+          ]
+        },
+        {
+          "action": "playExtra",
+          "label": "Gag Reel",
+          "extra": "gag-reel"
+        },
+        {
+          "action": "playExtra",
+          "label": "Animation Tests",
+          "extra": "animation-tests"
+        },
+        {
+          "action": "playExtra",
+          "label": "Render Tests",
+          "extra": "render-tests"
+        },
+        {
+          "action": "back",
+          "label": "Back"
+        }
+      ]
+    }
+  },
+  "layout": {
+    "hideTitle": false,
+    "titlePosition": {
+      "x": 50,
+      "y": 13,
+      "w": 70,
+      "anchor": "center"
+    },
+    "buttonStyle": "glow",
+    "transition": {
+      "style": "zoom",
+      "durationMs": 420
+    }
+  },
+  "audio": {
+    "music": {
+      "source": "file",
+      "file": "https://peppy6582.github.io/jellydisc-menus/v1/art/b24278ef-9b12-4892-a8e5-09fca96ea38e/theme.m4a",
+      "volume": 0.45
+    },
+    "sounds": {
+      "preset": "chime",
+      "volume": 0.35
+    }
+  }
+}

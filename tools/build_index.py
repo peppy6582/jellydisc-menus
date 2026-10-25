@@ -24,8 +24,9 @@ from catalogue_check import check_catalogue, read_json, MAX_MENU_BYTES, version_
 
 BASE_URL = "https://peppy6582.github.io/jellydisc-menus/"
 ATTRIBUTION = ("Menus are dedicated to the public domain under CC0 1.0. Movie and series ids are TMDB, IMDb and TVDB "
-               "identifiers; this catalogue contains no artwork, music or video, is a community project, and is not "
-               "affiliated with Jellyfin or TMDB.")
+               "identifiers. The catalogue contains no studio artwork, music or video; openly licensed art that some menus "
+               "link to is published under v1/art/<menuId>/ with its own licence in CREDITS.txt. A community project, "
+               "not affiliated with Jellyfin or TMDB.")
 
 
 def min_plugin_version(features, features_cfg):
@@ -86,6 +87,9 @@ def build(root, plugin_dir, out, generated, history=True):
                         f.write(raw)
         with open(os.path.join(mdir, f"{rev}.menu.json"), "wb") as f:
             f.write(e.raw)
+        if e.hosted_art:
+            # the whole folder, so older revisions keep their files too; the checker has vetted every file in it
+            shutil.copytree(os.path.join(root, "art", mid), os.path.join(v1, "art", mid))
 
         entry = {
             "menuId": mid,
@@ -116,6 +120,7 @@ def build(root, plugin_dir, out, generated, history=True):
             "backgrounds": e.backgrounds,
             "extras": len(menu.get("extras") or {}),
             "needsLocalArt": e.needs_art,
+            "hostedArt": e.hosted_art,
             "demo": bool(listing.get("demo", False)),
             "page": f"menus/{mid}/",
         })
