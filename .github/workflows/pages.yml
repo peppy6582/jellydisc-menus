@@ -59,3 +59,21 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # The site people browse is a second copy at discs.astermediaplayer.com, built by AsterMediaPlayer/discs from
+  # this repository. Ask it to rebuild now, so a new menu appears there within minutes. Needs a fine-grained token
+  # with "Contents: read and write" on AsterMediaPlayer/discs, saved here as the DISCS_DISPATCH_TOKEN secret.
+  # Without it this step does nothing, and the discs site still catches up on its daily rebuild.
+  rebuild-discs-site:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tell AsterMediaPlayer/discs to rebuild
+        env:
+          GH_TOKEN: ${{ secrets.DISCS_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "No DISCS_DISPATCH_TOKEN secret: skipping. The discs site rebuilds daily on its own."
+            exit 0
+          fi
+          gh api repos/AsterMediaPlayer/discs/dispatches -f event_type=catalogue-updated
