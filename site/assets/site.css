@@ -244,3 +244,11 @@ nav a.cta, nav a.cta:hover { color: var(--accent-fg); }
 .button.ghost { background: transparent; color: var(--fg); border-color: var(--line); }
 .button.ghost:hover { background: transparent; border-color: var(--accent); color: var(--fg); }
 .note { border-left-color: var(--gold); }
+/* "Disc Menus · by Aster": the name goes home, "by Aster" goes to astermediaplayer.com. */
+.brandline { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.by-dot { color: var(--muted); font-weight: 700; }
+.by-aster { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--accent); text-decoration: none; }
+.by-aster:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+/* Aster's bolder nav needs a little less room on phones, so "Add a menu" stays in view. */
+@media (max-width: 40rem) { nav a { font-size: .84rem; padding: 6px 8px; } nav a.cta { margin-left: 2px; } }
+@media (max-width: 23rem) { nav a { font-size: .8rem; padding: 6px 6px; } }
