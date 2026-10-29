@@ -91,7 +91,11 @@ test("every page has the content-security policy and no inline script", () => {
 test("nothing is loaded from outside the site", () => {
   for (const [name, text] of Object.entries(html)) {
     for (const m of text.matchAll(/\b(?:src|action)="([^"]*)"/g)) assert.ok(!/^(https?:)?\/\//.test(m[1]), `${name}: ${m[0]}`);
-    for (const m of text.matchAll(/<link\b[^>]*href="([^"]*)"/g)) assert.ok(!/^(https?:)?\/\//.test(m[1]), `${name}: ${m[0]}`);
+    for (const m of text.matchAll(/<link\b[^>]*href="([^"]*)"/g)) {
+      // rel="canonical" only names the page's preferred address (discs.astermediaplayer.com); it loads nothing.
+      if (/\brel="canonical"/.test(m[0])) continue;
+      assert.ok(!/^(https?:)?\/\//.test(m[1]), `${name}: ${m[0]}`);
+    }
   }
 });
 

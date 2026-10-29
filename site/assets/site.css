@@ -156,3 +156,7 @@ details summary { cursor: pointer; font-weight: 600; margin: 8px 0; }
 .foot p { margin: 0 0 .5em; max-width: 52rem; }
 
 @media (max-width: 30rem) { .facts { grid-template-columns: 1fr; } .facts dt { margin-top: 8px; } .hero { gap: 28px; } }
+
+/* Shown only on the old github.io build: points people at discs.astermediaplayer.com. */
+.moved { margin: 0; padding: 10px 16px; text-align: center; font-size: 0.95rem; background: var(--accent-soft); color: var(--fg); border-bottom: 1px solid var(--line); }
+.moved a { font-weight: 600; }
