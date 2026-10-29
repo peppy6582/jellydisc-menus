@@ -160,3 +160,95 @@ details summary { cursor: pointer; font-weight: 600; margin: 8px 0; }
 /* Shown only on the old github.io build: points people at discs.astermediaplayer.com. */
 .moved { margin: 0; padding: 10px 16px; text-align: center; font-size: 0.95rem; background: var(--accent-soft); color: var(--fg); border-bottom: 1px solid var(--line); }
 .moved a { font-weight: 600; }
+
+/* ---------------------------------------------------------------------------------------------------------------
+   Aster look: the same palette, type and details as astermediaplayer.com, so discs.astermediaplayer.com reads as
+   part of it. Purple stays the accent; gold (Aster's "disc" colour) replaces the old teal. The fonts are served from
+   assets/fonts/ (SIL Open Font License, texts beside them) because the content-security policy allows no outside fonts.
+   --------------------------------------------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/AtkinsonHyperlegible-400.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(fonts/AtkinsonHyperlegible-700.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 600 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(fonts/BricolageGrotesque-600-800.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(fonts/IBMPlexMono-400.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(fonts/IBMPlexMono-600.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --bg: #f6f4fb; --bg-2: #ffffff; --fg: #1d1830; --muted: #5d5873; --line: #e2ddef;
+  --card: #ffffff; --card-line: #e2ddef; --accent: #5b3fd0; --accent-fg: #ffffff; --accent-soft: #ebe5ff;
+  --teal: #b07a00; --gold: #e8a50c; --warn-bg: #fdf3dc; --warn-line: #e8a50c; --warn-fg: #6e4a00;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #13101d; --bg-2: #1c1829; --fg: #efecf8; --muted: #a8a2bf; --line: #2e2945;
+    --card: #1c1829; --card-line: #2e2945; --accent: #a995ff; --accent-fg: #13101d; --accent-soft: #2a2350;
+    --teal: #f4b93a; --gold: #f4b93a; --warn-bg: #2e2412; --warn-line: #8a6a1f; --warn-fg: #f4d38a;
+  }
+}
+body { font-family: var(--font-body); font-size: 1.0625rem; }
+h1, h2, h3, .brand { font-family: var(--font-display); text-wrap: balance; }
+h1 { font-weight: 800; letter-spacing: -.02em; }
+h2, h3 { font-weight: 700; }
+code, pre, .hash { font-family: var(--font-mono); }
+/* Small labels: Aster's mono caps. */
+.eyebrow { font-family: var(--font-mono); font-weight: 600; font-size: .78rem; letter-spacing: .08em; color: var(--muted); }
+.steps li::before { font-family: var(--font-mono); font-weight: 600; letter-spacing: .08em; color: var(--accent); }
+.corner, .controls .label { font-family: var(--font-mono); }
+.chip { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .02em; }
+/* Header and navigation, as on the main site. */
+nav a { color: var(--muted); font-weight: 700; font-size: .9rem; }
+nav a:hover { color: var(--fg); background: var(--accent-soft); }
+nav a.cta, nav a.cta:hover { color: var(--accent-fg); }
+.hero h1 em { background: none; -webkit-background-clip: border-box; background-clip: border-box; color: var(--accent); }
+/* Buttons: Aster's solid dark pill that turns purple, and a quiet outline. */
+.button { background: var(--fg); color: var(--bg); border-color: var(--fg); font-weight: 700; }
+.button:hover { background: var(--accent); border-color: var(--accent); color: #fff; filter: none; }
+.button.ghost { background: transparent; color: var(--fg); border-color: var(--line); }
+.button.ghost:hover { background: transparent; border-color: var(--accent); color: var(--fg); }
+.note { border-left-color: var(--gold); }
+/* "Disc Menus · by Aster": the name goes home, "by Aster" goes to astermediaplayer.com. */
+.brandline { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.by-dot { color: var(--muted); font-weight: 700; }
+.by-aster { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--accent); text-decoration: none; }
+.by-aster:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+/* Aster's bolder nav needs a little less room on phones, so "Add a menu" stays in view. */
+@media (max-width: 40rem) { nav a { font-size: .84rem; padding: 6px 8px; } nav a.cta { margin-left: 2px; } }
+@media (max-width: 23rem) { nav a { font-size: .8rem; padding: 6px 6px; } }

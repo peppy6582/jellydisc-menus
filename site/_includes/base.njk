@@ -26,7 +26,11 @@
 {% if site.moved %}<p class="moved">This catalogue now lives at <a href="{{ site.home }}{{ page.url | replace('/', '', 1) if page.url else '' }}">discs.astermediaplayer.com</a>. Nothing else changes: the Disc Menus plugin still installs menus from here.</p>{% endif %}
 <header class="top">
   <div class="wrap bar">
-    <a class="brand" href="{{ '/' | url }}"><img src="{{ '/assets/logo.svg' | url }}" alt="" width="30" height="30">Disc Menus <span>catalogue</span></a>
+    <div class="brandline">
+      <a class="brand" href="{{ '/' | url }}"><img src="{{ '/assets/logo.svg' | url }}" alt="" width="30" height="30">Disc Menus</a>
+      <span class="by-dot" aria-hidden="true">·</span>
+      <a class="by-aster" href="https://astermediaplayer.com/">by Aster</a>
+    </div>
     <nav aria-label="Main">
       <a href="{{ '/menus/' | url }}">Browse</a>
       <a href="{{ '/search/' | url }}">Search</a>
